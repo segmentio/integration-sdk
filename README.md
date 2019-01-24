@@ -1,5 +1,5 @@
 # Overview
-This is a small POC exploring what a potential V2 of the Segment integration "stack". More specifically, it explores a potential v2 of the `facade` library, the integration `Service`, and the base `Integration` class.
+This is a small POC exploring a potential V2 of the Segment integration "stack". More specifically, it explores a potential v2 of the `facade` library, the integration `Service`, and the base `Integration` class.
 
 # How is it Organized?
 There are four main components in the system.
