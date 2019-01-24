@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "target": "ES2015",
+    "outDir": "./dist",
+    "declaration": true,
+    "sourceMap": true,
+    "strict": true,
+    "suppressImplicitAnyIndexErrors": true
+  }
+}
