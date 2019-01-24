@@ -7,6 +7,7 @@
     "declaration": true,
     "sourceMap": true,
     "strict": true,
-    "suppressImplicitAnyIndexErrors": true
+    "suppressImplicitAnyIndexErrors": true,
+    "experimentalDecorators": true
   }
 }

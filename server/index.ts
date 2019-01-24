@@ -6,23 +6,32 @@ import * as express from 'express'
 
 const app = express()
 
-interface IdentifyPayload {
+type EventTypes = 'track' | 'identify'
+
+interface Payload {
+  type: EventTypes
+  context: {
+    channel: 'web' | 'mobile'
+  }
+}
+
+export interface IdentifyPayload extends Payload {
   type: 'identify'
   traits: object
 }
 
-interface TrackPayload {
+export interface TrackPayload extends Payload {
   type: 'track'
   name: string
   properties: object
 }
 
+export type EventPayload = IdentifyPayload | TrackPayload
+
 interface CentrifugeResponse {
   status: number
   error?: Error
 }
-
-type CentrifugePayload = IdentifyPayload | TrackPayload
 
 export class Server {
   public integration: Integration
@@ -34,7 +43,7 @@ export class Server {
   }
 
   async handle(req: express.Request, res: express.Response) {
-    const payload = req.body as CentrifugePayload
+    const payload = req.body as EventPayload
 
     try {
       const r = await this.proxyEvent(payload)
@@ -53,7 +62,7 @@ export class Server {
     }
   }
 
-  async proxyEvent(event: CentrifugePayload): Promise<IntegrationResponse> {
+  async proxyEvent(event: EventPayload): Promise<IntegrationResponse> {
     if (event.type === 'identify') {
       return await this.handleIdentify(event)
     }

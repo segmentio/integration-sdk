@@ -1,14 +1,17 @@
 import { Facade } from '../src'
 import { OrderCompleted, ProductListViewed } from '../spec/ecommerce'
 import { User } from '../spec/types'
+import { Mobile, Web } from '../context'
+import { EventPayload, IdentifyPayload, TrackPayload } from '../../server'
 
 export class SpecEvents {
-  'Order Completed': OrderCompleted
-  'Product List Viewed': ProductListViewed
+  'Order Completed' = OrderCompleted
+  'Product List Viewed' = ProductListViewed
 }
 
 export function toFacade<T extends Facade>(name: string, properties: object) {
-	const SpecFacade = (SpecEvents as any | null)[name]
+  const specEvents = new SpecEvents()
+  const SpecFacade = specEvents[name]
   if (SpecFacade) {
 		return new SpecFacade(properties) as T
 	}
@@ -16,8 +19,15 @@ export function toFacade<T extends Facade>(name: string, properties: object) {
 }
 
 class Message extends Facade {
-  constructor(event: any) {
+  public context: Mobile | Web
+  constructor(event: EventPayload) {
     super(event)
+    const channel = event.context.channel
+    if (channel === 'web') {
+      this.context = new Web(event.context)
+    } else {
+      this.context = new Mobile(event.context)
+    }
   }
 
   get timestamp() {
@@ -28,7 +38,7 @@ class Message extends Facade {
 export class Track<T extends Facade = Facade> extends Message {
   public properties: T
   public name: string
-  constructor(event: { name: string, properties: object }) {
+  constructor(event: TrackPayload) {
       super(event)
       this.name = event.name
       this.properties = toFacade(event.name, event.properties)
@@ -37,7 +47,7 @@ export class Track<T extends Facade = Facade> extends Message {
 
 export class Identify extends Message {
   public traits: User
-  constructor(event: any) {
+  constructor(event: IdentifyPayload) {
     super(event)
     this.traits = new User(event.traits)
   }

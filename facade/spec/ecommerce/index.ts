@@ -14,6 +14,14 @@ function assertString(value: any, coerce?: boolean): string | undefined {
   }
 }
 
+function enumerable(value: boolean) {
+  console.log(value)
+  return function (target: any, propertyKey: string, descriptor: PropertyDescriptor) {
+    console.log(propertyKey)
+    console.log(descriptor)
+  }
+}
+
 class Product extends Facade<Spec.Product> implements Spec.Product {
   get brand() {
     return assertString(this.toJSON().brand)
@@ -79,7 +87,9 @@ export class OrderCompleted extends Facade<Spec.OrderCompleted> implements Spec.
     return this.toJSON().affiliation
   }
 
+  @enumerable(false)
   get checkoutId() {
+    console.log('test')
     return this.toJSON().checkoutId || this.toJSON().checkout_id as Spec.OrderCompleted["checkoutId"]
   }
 
@@ -96,7 +106,7 @@ export class OrderCompleted extends Facade<Spec.OrderCompleted> implements Spec.
   }
 
   get orderId() {
-    return this.toJSON().orderId
+    return this.toJSON().orderId || this.toJSON().order_id as Spec.OrderCompleted["orderId"]
   }
 
   get revenue() {

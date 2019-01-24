@@ -10,7 +10,7 @@ class Amplitude extends Integration {
   }
 
   async orderCompleted(event: Track<OrderCompleted>) {
-    console.log(event.properties.toJSON())
+    console.log(event.properties.checkoutId)
     return { status: 200, res: {} }
   }
 
@@ -22,4 +22,15 @@ class Amplitude extends Integration {
 
 const server = new Server(Amplitude)
 
-server.listen()
+server.proxyEvent({
+  type: 'track',
+  name: 'Order Completed',
+  context: {
+    channel: 'web'
+  },
+  properties: {
+    checkoutId: 'foo'
+  }
+})
+
+// server.listen()
