@@ -8,7 +8,7 @@ There are four main components in the system.
 The `/spec` directory stores a collection of interfaces that define the Segment spec. These interfaces are implemented by `Facade`.
 
 ## `facade/`
-The `facade` directory stores the base `Facade` class as well some child `Facade` class implementations. It also stores the main Segment API methods represented also as `Facade` classes.
+This directory stores the base `Facade` class as well some child `Facade` class implementations. It also stores the main Segment API methods represented also as `Facade` classes.
 
 `Facade` is designed to provide some type safety for developers and make up for our lack of API enforcement further up in our pipeline.
 
