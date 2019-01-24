@@ -34,3 +34,10 @@ There's a simple example of an integration in the `example/` directory. To run t
 $ node dist/example/index.js
 $ curl http://localhost:3000 -H "Content-Type: application/json" -d '{"type": "track", "name": "Order Completed", "properties": { "productId": "foo" } }'
 ```
+
+# Future Work
+- Type validation in Facade "getters". Also a way to warn end-users if there types are not compatible with our spec.
+- Facade/Spec implementations for `context` object payloads.
+- Explore options for "channel" specific integrations (ie. allow integrations to block events from Web or Mobile). This will make defining the `context` type in event handler payloads difficult.
+- Better support for integrations to require specific properties for specific events and/or all events. Also a mechanism for communicating those requirements back to the end-user in a standardized way.
+- Possible standardization of a `Mapper` class.
