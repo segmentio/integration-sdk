@@ -23,4 +23,14 @@ The base class also introduces a new method called `subscribe`. This is used by 
 Finally, the Server class takes an `Integration` in it's constructor and exposes a `listen` method that can be used to start an Express server. This server will listen for and respond to Segment event payloads, proxying the events to the appropriate integration handlers and returning a strongly typed response.
 
 # Getting Started
-There's a simple example integration in the `examples/` directory.
+```
+$ goto integrationSDK
+$ yarn build
+```
+
+There's a simple example of an integration in the `example/` directory. To run the server and start receiving events, run:
+
+```
+$ node dist/example/index.js
+$ curl http://localhost:3000 -H "Content-Type: application/json" -d '{"type": "track", "name": "Order Completed", "properties": { "productId": "foo" } }'
+```
