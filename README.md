@@ -25,7 +25,7 @@ Finally, the Server class takes an `Integration` in it's constructor and exposes
 # Getting Started
 ```
 $ goto integrationSDK
-$ yarn build
+$ npm build
 ```
 
 There's a simple example of an integration in the `example/` directory. To run the server and start receiving events, run:
