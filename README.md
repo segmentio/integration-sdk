@@ -24,3 +24,5 @@ The base class also introduces a new method called `subscribe`. This is used by 
 
 ## `server/`
 Finally, the Server class takes an `Integration` in it's constructor and exposes a `listen` method that can be used to start an Express server. This server will listen for and respond to Segment event payloads, proxying the events to the appropriate integration handlers and returning strongly typed response.
+
+⛰
