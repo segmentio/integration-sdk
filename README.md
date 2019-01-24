@@ -5,7 +5,7 @@ This is a small POC exploring what a potential V2 of the Segment integration "st
 There are four main components in the system.
 
 ## `spec/`
-The `/spec` directory stores a interfaces that collectively define the Segment spec. These interfaces are implemented by `Facade`.
+The `/spec` directory stores a collection of interfaces that define the Segment spec. These interfaces are implemented by `Facade`.
 
 ## `facade/`
 The `facade` directory stores the base `Facade` class as well some child `Facade` class implementations. It also stores the main Segment API methods represented also as `Facade` classes.
