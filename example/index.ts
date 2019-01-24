@@ -1,6 +1,6 @@
 import { Integration } from '../integration/index'
 import { OrderCompleted } from '../facade/spec/ecommerce'
-import { Track } from '../facade/methods'
+import { Track, Identify } from '../facade/methods'
 import { Server } from '../server'
 
 class Amplitude extends Integration {
@@ -11,6 +11,11 @@ class Amplitude extends Integration {
 
   async orderCompleted(event: Track<OrderCompleted>) {
     console.log(event.properties.toJSON())
+    return { status: 200, res: {} }
+  }
+
+  async identify(event: Identify) {
+    console.log(event.traits.email)
     return { status: 200, res: {} }
   }
 }
