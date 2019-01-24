@@ -1,4 +1,4 @@
-import { Integration } from '../index'
+import { Integration } from '../integration/index'
 import { OrderCompleted } from '../facade/spec/ecommerce'
 import { Track } from '../facade/methods'
 import { Server } from '../server'

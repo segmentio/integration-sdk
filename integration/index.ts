@@ -1,6 +1,6 @@
-import { Track, Identify, SpecEvents } from './facade/methods'
-import { Facade } from './facade/src'
-import { EventNotSupported } from './errors'
+import { Track, Identify, SpecEvents } from '../facade/methods'
+import { Facade } from '../facade/src'
+import { EventNotSupported } from '../errors'
 
 export interface IntegrationResponse {
   status: number

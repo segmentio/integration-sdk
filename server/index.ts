@@ -1,4 +1,4 @@
-import { Integration, IntegrationResponse } from '../'
+import { Integration, IntegrationResponse } from '../integration'
 import { IntegrationError } from '../errors'
 import { Track, Identify } from '../facade/methods'
 import * as bodyParser from 'body-parser'
