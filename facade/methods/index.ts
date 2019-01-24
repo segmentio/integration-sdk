@@ -39,6 +39,6 @@ export class Identify extends Message {
   public traits: User
   constructor(event: any) {
     super(event)
-    this.traits = toFacade('Identify', event.traits)
+    this.traits = new User(event.traits)
   }
 }
