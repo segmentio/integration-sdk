@@ -1,24 +1,10 @@
 import { Facade } from '../../src'
 import * as Spec from '../../../spec'
 
-function assertString(value: any, coerce?: boolean): string | undefined {
+function assertString<T>(value: T): T | undefined {
   const type = typeof value
   if (type === 'string') {
     return value
-  }
-
-  if (coerce) {
-    if (type === 'number' || type === 'boolean') {
-      return value.toString()
-    }
-  }
-}
-
-function enumerable(value: boolean) {
-  console.log(value)
-  return function (target: any, propertyKey: string, descriptor: PropertyDescriptor) {
-    console.log(propertyKey)
-    console.log(descriptor)
   }
 }
 
@@ -26,6 +12,7 @@ class Product extends Facade<Spec.Product> implements Spec.Product {
   get brand() {
     return assertString(this.toJSON().brand)
   }
+
   get category() {
     return this.toJSON().category
   }
@@ -87,9 +74,7 @@ export class OrderCompleted extends Facade<Spec.OrderCompleted> implements Spec.
     return this.toJSON().affiliation
   }
 
-  @enumerable(false)
   get checkoutId() {
-    console.log('test')
     return this.toJSON().checkoutId || this.toJSON().checkout_id as Spec.OrderCompleted["checkoutId"]
   }
 
@@ -144,3 +129,66 @@ export class ProductListViewed extends Facade<Spec.ProductListViewed> implements
     return this.toJSON().listId || this.toJSON().list_id as Spec.ProductListViewed["listId"]
   }
 }
+
+class Filter extends Facade<Spec.Filter> implements Spec.Filter {
+  get type() {
+    return this.toJSON().type
+  }
+
+  get value() {
+    return this.toJSON().value
+  }
+}
+
+class Sort extends Facade<Spec.Sorts> implements Spec.Sorts {
+  get type() {
+    return this.toJSON().type
+  }
+
+  get value() {
+    return this.toJSON().value
+  }
+}
+
+export class ProductListFiltered extends ProductListViewed implements Spec.ProductListFiltered {
+  public filters: Filter[] = []
+  public sorts: Sort[] = []
+  constructor(event: Spec.ProductListFiltered) {
+    super(event)
+    const filters = event.filters
+    const sorts = event.sorts
+    if (Array.isArray(filters)) {
+      this.filters = filters.map(filter => new Filter(filter))
+    }
+
+    if (Array.isArray(sorts)) {
+      this.sorts = sorts.map(sort => new Sort(sort))
+    }
+  }
+}
+
+export class PromotionViewed extends Facade<Spec.PromotionViewed> implements Spec.PromotionViewed {
+  get creative() {
+    return this.toJSON().creative
+  }
+
+  get name() {
+    return this.toJSON().name
+  }
+
+  get position() {
+    return this.toJSON().position
+  }
+
+  get promotionId() {
+    return this.toJSON().promotionId
+  }
+}
+
+export class PromotionClicked extends PromotionViewed {}
+
+export class ProductClicked extends Product {}
+
+export class ProductAdded extends Product {}
+
+export class ProductRemoved extends Product {}

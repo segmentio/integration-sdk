@@ -1,5 +1,5 @@
 import { Integration } from '../integration/index'
-import { OrderCompleted } from '../facade/spec/ecommerce'
+import { OrderCompleted, ProductClicked, ProductAdded, ProductListFiltered } from '../facade/spec/ecommerce'
 import { Track, Identify } from '../facade/methods'
 import { Server } from '../server'
 
@@ -7,10 +7,14 @@ class Amplitude extends Integration {
   constructor() {
     super()
     this.subscribe<OrderCompleted>('Order Completed', this.orderCompleted)
+    this.subscribe<ProductListFiltered>('Product List Filtered', this.productClicked)
   }
 
   async orderCompleted(event: Track<OrderCompleted>) {
-    console.log(event.properties.checkoutId)
+    return { status: 200, res: {} }
+  }
+
+  async productClicked(event: Track<ProductClicked>) {
     return { status: 200, res: {} }
   }
 

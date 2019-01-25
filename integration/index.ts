@@ -1,5 +1,6 @@
 import { Track, Identify, SpecEvents } from '../facade/methods'
 import { Facade } from '../facade/src'
+import { OrderCompleted } from '../facade/spec/ecommerce'
 import { EventNotSupported } from '../errors'
 
 export interface IntegrationResponse {
@@ -7,10 +8,12 @@ export interface IntegrationResponse {
   res: object
 }
 
-type EventName<T extends Facade> = {
-  [K in keyof SpecEvents]:
-    SpecEvents[K] extends T ? K : never
+type Filter<Base, Condition> = {
+  [Key in keyof Base]:
+    Base[Key] extends Condition ? Key : never
 }
+
+type EventName<T extends Facade> = Filter<SpecEvents, T>[keyof SpecEvents]
 
 interface EventHandler {
   (event: Track<any>): Promise<IntegrationResponse>
@@ -27,7 +30,7 @@ export abstract class Integration {
     Integration.validations.push(handler)
   }
 
-  subscribe<T extends Facade>(name: keyof EventName<T>, handler: EventHandler) {
+  subscribe<T extends Facade>(name: EventName<T>, handler: EventHandler) {
     this.subscriptions.set(name, handler.bind(this))
   }
 
