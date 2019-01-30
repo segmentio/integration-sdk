@@ -7,6 +7,22 @@ export class Context extends Facade<Spec.Context> implements Spec.Context {
     super(event)
     this.channel = event.channel
   }
+
+  get ip() {
+    return this.toJSON().ip
+  }
+
+  get locale() {
+    return this.toJSON().locale
+  }
+
+  get timezone() {
+    return this.toJSON().timezone
+  }
+
+  get userAgent() {
+    return this.toJSON().userAgent || this.toJSON().user_agent as Spec.Context["userAgent"]
+  }
 }
 
 export class Mobile extends Context implements Spec.Mobile {

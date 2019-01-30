@@ -22,7 +22,7 @@ class Product extends Facade<Spec.Product> implements Spec.Product {
   }
 
   get imageUrl() {
-    return this.toJSON().imageUrl || this.toJSON().image_url
+    return this.toJSON().imageUrl || this.toJSON().image_url as Spec.Product["imageUrl"]
   }
 
   get name() {
@@ -38,7 +38,7 @@ class Product extends Facade<Spec.Product> implements Spec.Product {
   }
 
   get productId() {
-    return this.toJSON().productId || this.toJSON().product_id
+    return this.toJSON().productId || this.toJSON().product_id as Spec.Product["productId"]
   }
 
   get quantity() {

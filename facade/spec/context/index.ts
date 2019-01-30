@@ -1,22 +1,26 @@
 export interface App {
-  name: string
-  version: string
-  build: string
+  name?: string
+  version?: string
+  build?: string
 }
 
 export interface Device {
-  id: string
-  manufacturer: string
-  model: string
-  name: string
-  type: string
-  version: string
+  id?: string
+  manufacturer?: string
+  model?: string
+  name?: string
+  type?: string
+  version?: string
 }
 
 type Channels = 'mobile' | 'web' | 'server'
 
 export interface Context {
   channel: Channels
+  ip?: string
+  locale?: string
+  userAgent?: string
+  timezone?: string
 }
 
 export interface Mobile extends Context {
