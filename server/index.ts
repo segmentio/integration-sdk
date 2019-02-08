@@ -1,4 +1,4 @@
-import { Integration, IntegrationResponse } from '../integration'
+import { Integration } from '../integration'
 import { IntegrationError } from '../errors'
 import { Track, Identify } from '../facade/methods'
 import * as bodyParser from 'body-parser'
@@ -10,6 +10,8 @@ type EventTypes = 'track' | 'identify'
 
 interface Payload {
   type: EventTypes
+  userId?: string
+  anonymousId?: string
   context: {
     channel: 'web' | 'mobile'
   }

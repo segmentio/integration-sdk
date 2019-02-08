@@ -63,8 +63,10 @@ class Message extends Facade {
 export class Track<T extends Facade = Facade> extends Message {
   public properties: T
   public name: string
+  public userId?: string
   constructor(event: TrackPayload) {
     super(event)
+    this.userId = event.userId
     this.name = event.name
     this.properties = toFacade(event.name, event.properties)
   }
@@ -72,8 +74,10 @@ export class Track<T extends Facade = Facade> extends Message {
 
 export class Identify extends Message {
   public traits: User
+  public userId?: string
   constructor(event: IdentifyPayload) {
     super(event)
+    this.userId = event.userId
     this.traits = new User(event.traits)
   }
 }

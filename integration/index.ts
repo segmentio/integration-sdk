@@ -1,12 +1,6 @@
 import { Track, Identify, SpecEvents } from '../facade/methods'
 import { Facade } from '../facade/src'
-import { OrderCompleted } from '../facade/spec/ecommerce'
-import { EventNotSupported } from '../errors'
-
-export interface IntegrationResponse {
-  status: number
-  res: object
-}
+import { IntegrationResponse, EventNotSupported } from './responses'
 
 type Filter<Base, Condition> = {
   [Key in keyof Base]:
@@ -18,7 +12,6 @@ type EventName<T extends Facade> = Filter<SpecEvents, T>[keyof SpecEvents]
 interface EventHandler {
   (event: Track<any>): Promise<IntegrationResponse>
 }
-
 
 export abstract class Integration {
   private static validations: ((event: Track) => void)[]
@@ -35,10 +28,10 @@ export abstract class Integration {
   }
 
   async track(event: Track): Promise<IntegrationResponse> {
-    throw new EventNotSupported('track')
+    return new EventNotSupported('track')
   }
 
   async identify(event: Identify): Promise<IntegrationResponse> {
-    throw new EventNotSupported('identify')
+    return new EventNotSupported('identify')
   }
 }

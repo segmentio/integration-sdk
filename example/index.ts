@@ -7,22 +7,78 @@ import {
 } from '../facade/spec/ecommerce'
 import { Track, Identify } from '../facade/methods'
 import { Server } from '../server'
+import { Success } from '../integration/responses'
+
+interface UserId {
+  user_id: string
+}
+
+interface DeviceId {
+  device_id: string
+}
+
+interface MobilePayload {
+  app_version?: string
+}
+
+type BasePayload = {
+  time?: string
+  event_properties?: object
+  user_properties?: object
+} & MobilePayload & (UserId | DeviceId)
+
+type TrackPayload = {
+  event_type: string
+} & BasePayload
 
 class Mapper {
-  track(event: Track) {
-    const payload = {
+  mapBasePayload(event: Track | Identify): BasePayload {
+    return {
+      ...this.getId(event),
+      ...this.getMobileProperties(event)
+    }
+  }
+
+  getId(event: Track | Identify): UserId | DeviceId {
+    let deviceId
+    let userId
+    if (event.context.channel === 'mobile' && event.context.device.id) {
+      deviceId = event.context.device.id
+    }
+
+    if (event.userId) {
+      userId = event.userId
+    }
+
+    if (userId && deviceId) {
+      return { user_id: userId, device_id: deviceId }
+    }
+
+    if (userId) {
+      return { user_id: userId }
+    }
+
+    if (deviceId) {
+      return { device_id: deviceId }
+    }
+
+    throw new Error()
+  }
+
+  getMobileProperties(event: Track | Identify): MobilePayload {
+    if (event.context.channel !== 'mobile') {
+      return {}
+    }
+    return {
+      app_version: event.context.app.version
+    }
+  }
+
+  track(event: Track): TrackPayload {
+    const payload: TrackPayload = {
       event_type: event.name,
       time: event.timestamp,
       event_properties: event.properties.toJSON(),
-      user_id: event.context.ip
-    }
-
-    // Map mobile specific properties.
-    if (event.context.channel === 'mobile') {
-      payload['device_id'] = event.context.device.id
-      payload['device_model'] = event.context.device.model
-      payload['device_brand'] = event.context.device.type
-      payload['app_version'] = event.context.app.version
     }
 
     return payload
@@ -38,26 +94,24 @@ class Amplitude extends Integration {
   }
 
   async orderCompleted(event: Track<OrderCompleted>) {
-    return { status: 200, res: {} }
+    return new Success()
   }
 
   async productClicked(event: Track<ProductClicked>) {
     if (event.context.channel === 'mobile') {
       event.context.device
     }
-    return { status: 200, res: {} }
+    return new Success()
   }
 
   async track(event: Track) {
     const payload = this.mapper.track(event)
-    if (!payload.user_id && !payload['device_id']) {
-    }
-    return { status: 200, res: {} }
+    return new Success()
   }
 
   async identify(event: Identify) {
     console.log(event.traits.email)
-    return { status: 200, res: {} }
+    return new Success()
   }
 }
 
