@@ -1,5 +1,5 @@
 import { Facade } from '../../src'
-import * as Spec from '../../../spec'
+import * as Spec from '../../../spec/events/ecommerce'
 
 function assertString<T>(value: T): T | undefined {
   const type = typeof value
@@ -42,15 +42,15 @@ class Product extends Facade<Spec.Product> implements Spec.Product {
   }
 
   get quantity() {
-    return this.toJSON().quantity
+    return this.enforce.number(this.toJSON().quantity)
   }
 
   get sku() {
-    return this.toJSON().sku
+    return this.enforce.string(this.toJSON().sku)
   }
 
   get url() {
-    return this.toJSON().url
+    return this.enforce.string(this.toJSON().url)
   }
 
   get variant() {
@@ -79,7 +79,7 @@ export class OrderCompleted extends Facade<Spec.OrderCompleted> implements Spec.
   }
 
   get coupon() {
-    return this.toJSON().coupon
+    return this.enforce.string(this.toJSON().coupon)
   }
 
   get currency() {

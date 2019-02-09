@@ -86,7 +86,10 @@ export interface CheckoutStarted {
   shipping: number
   tax: number
   discount: number
-  coupon: string
+  /**
+   * Coupon Id
+   */
+  coupon?: string
   currency: string
   products: Product[]
 }
@@ -111,7 +114,7 @@ export interface OrderUpdated extends CheckoutStarted {}
 
 export interface OrderCompleted extends CheckoutStarted {}
 
-export interface OrderRefunded {
+export interface OrderRefunded extends CheckoutStarted {
   orderId?: string
 }
 

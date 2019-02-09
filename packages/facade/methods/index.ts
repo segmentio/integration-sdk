@@ -8,10 +8,9 @@ import {
   ProductRemoved,
   PromotionClicked,
   PromotionViewed
-} from '../spec/ecommerce'
-import { User } from '../spec/types'
+} from '../events/ecommerce'
 import { Mobile, Web } from '../context'
-import { EventPayload, IdentifyPayload, TrackPayload } from '../../server'
+import * as Spec from '../../spec/methods'
 
 export interface SpecEvents {
   'Order Completed': OrderCompleted
@@ -35,7 +34,7 @@ const specEvents = {
   'Promotion Viewed': PromotionViewed
 }
 
-export function toFacade<T extends Facade>(name: string, properties: object) {
+function toFacade<T extends Facade>(name: string, properties: object) {
   const SpecFacade = specEvents[name]
   if (SpecFacade) {
     return new SpecFacade(properties) as T
@@ -43,10 +42,12 @@ export function toFacade<T extends Facade>(name: string, properties: object) {
   return new Facade(properties) as T
 }
 
-class Message extends Facade {
+class Message extends Facade implements Spec.BasePayload {
   public context: Mobile | Web
-  constructor(event: EventPayload) {
+  public type: Spec.Methods
+  constructor(event: Spec.BasePayload) {
     super(event)
+    this.type = event.type
     const channel = event.context.channel
     if (channel === 'web') {
       this.context = new Web(event.context)
@@ -55,29 +56,48 @@ class Message extends Facade {
     }
   }
 
+  get userId() {
+    const userId = this.toJSON().userId || this.toJSON().user_id
+    return this.enforce.stringOrNumber(userId)
+  }
+
   get timestamp() {
     return this.toJSON().timestamp
   }
 }
 
-export class Track<T extends Facade = Facade> extends Message {
+export class Track<T extends Facade = Facade> extends Message implements Spec.Track {
   public properties: T
   public name: string
-  public userId?: string
-  constructor(event: TrackPayload) {
+  public type: 'track'
+  constructor(event: Spec.Track) {
     super(event)
-    this.userId = event.userId
+    this.type = event.type
     this.name = event.name
     this.properties = toFacade(event.name, event.properties)
   }
 }
 
-export class Identify extends Message {
+class User extends Facade {
+  get email() {
+    return this.toJSON().email
+  }
+
+  get firstName() {
+    return this.toJSON().firstName || this.toJSON().first_name
+  }
+
+  get lastName() {
+    return this.toJSON().lastName || this.toJSON().last_name
+  }
+}
+
+export class Identify extends Message implements Spec.Identify {
   public traits: User
-  public userId?: string
-  constructor(event: IdentifyPayload) {
+  public type: 'identify'
+  constructor(event: Spec.Identify) {
     super(event)
-    this.userId = event.userId
+    this.type = event.type
     this.traits = new User(event.traits)
   }
 }
