@@ -20,13 +20,9 @@ export class Mapper {
 
   getId(event: Track | Identify): UserId | DeviceId {
     let deviceId
-    let userId
+    const userId = event.userId
     if (event.context.channel === 'mobile' && event.context.device.id) {
       deviceId = event.context.device.id
-    }
-
-    if (event.userId) {
-      userId = event.userId
     }
 
     if (userId && deviceId) {

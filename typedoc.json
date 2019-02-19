@@ -1,0 +1,14 @@
+{
+  "mode": "file",
+  "json": "docs.json",
+  "out": "ts-docs",
+  "exclude": [
+    "**/example/amplitude/*.ts"
+  ],
+  "ignoreCompilerErrors": true,
+  "excludeNotExported": true,
+  "excludePrivate": true,
+  "excludeProtected": true,
+  "readme": "none",
+  "theme": "default"
+}

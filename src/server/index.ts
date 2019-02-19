@@ -13,14 +13,26 @@ export class Server {
   constructor(IntegrationConstructor: new() => Integration){
     this.integration = new IntegrationConstructor()
     app.use(bodyParser.json())
-    app.post('/', this.handle.bind(this))
+    app.post('/', this.handleExpressRequest.bind(this))
   }
 
-  async handle(req: express.Request, res: express.Response) {
+  async handle(payload: object): Promise<IntegrationResponse> {
+    try {
+      const res = await this.proxyEvent(payload as Spec.Identify | Spec.Track)
+      return res
+    } catch (err) {
+      if (!err.status) {
+        err.status = 500
+      }
+      throw err
+    }
+  }
+
+  private async handleExpressRequest(req: express.Request, res: express.Response) {
     const payload = req.body as Spec.Track | Spec.Identify
 
     try {
-      const r = await this.proxyEvent(payload)
+      const r = await this.handle(payload)
       const { status } = r
       res.send({ status })
     } catch (error) {
@@ -34,7 +46,7 @@ export class Server {
     }
   }
 
-  async proxyEvent(event: Spec.Identify | Spec.Track): Promise<IntegrationResponse> {
+  private async proxyEvent(event: Spec.Identify | Spec.Track): Promise<IntegrationResponse> {
     if (event.type === 'identify') {
       return await this.handleIdentify(event)
     }
@@ -51,7 +63,7 @@ export class Server {
     app.listen(3000)
   }
 
-  async handleTrack(event: Spec.Track): Promise<IntegrationResponse> {
+  private async handleTrack(event: Spec.Track): Promise<IntegrationResponse> {
     const subscriptions = this.integration.subscriptions
     const eventSubscriptionHandler = subscriptions.get(event.name)
 
@@ -62,7 +74,7 @@ export class Server {
     }
   }
 
-  async handleIdentify(event: Spec.Identify): Promise<IntegrationResponse> {
+  private async handleIdentify(event: Spec.Identify): Promise<IntegrationResponse> {
     return await this.integration.identify(new Identify(event))
   }
 }

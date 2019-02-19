@@ -10,3 +10,5 @@ export {
   ProductListViewed,
   ProductRemoved
 } from './events/ecommerce'
+
+export { Facade } from './src'

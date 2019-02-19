@@ -30,16 +30,16 @@ class Amplitude extends Integration {
 
 const server = new Server(Amplitude)
 
-server.proxyEvent({
-  type: 'track',
-  name: 'Foo',
-  userId: '123123',
-  context: {
-    channel: 'web'
-  },
-  properties: {
-    checkoutId: 'foo'
-  }
-}).then(console.log).catch(console.error)
+// server.proxyEvent({
+//   type: 'track',
+//   name: 'Foo',
+//   userId: '123123',
+//   context: {
+//     channel: 'web'
+//   },
+//   properties: {
+//     checkoutId: 'foo'
+//   }
+// }).then(console.log).catch(console.error)
 
 // server.listen()

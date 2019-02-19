@@ -1,6 +1,9 @@
 import { Facade } from '../../src'
 import * as Spec from '../../../spec/context/common'
 
+/**
+ * Base Context
+ */
 export class BaseContext extends Facade<Spec.Base> implements Spec.Base {
   public channel: 'mobile' | 'web' | 'server'
   constructor(event: any) {

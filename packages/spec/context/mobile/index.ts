@@ -1,5 +1,4 @@
 import { Base } from '../common'
-
 export interface Mobile extends Base {
   channel: 'mobile'
   app: App

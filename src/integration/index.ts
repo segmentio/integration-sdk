@@ -1,5 +1,5 @@
-import { Track, Identify, SpecEvents } from '../facade/methods'
-import { Facade } from '../facade/src'
+import { Track, Identify, SpecEvents } from '../../packages/facade/methods'
+import { Facade } from '../../packages/facade'
 import { IntegrationResponse, EventNotSupported } from './responses'
 
 type Filter<Base, Condition> = {
@@ -14,14 +14,7 @@ interface EventHandler {
 }
 
 export abstract class Integration {
-  private static validations: ((event: Track) => void)[]
-  static reject() {}
-  static validate() {}
   public subscriptions = new Map<string, EventHandler>()
-
-  static ensure(handler: (event: Track | Identify) => void) {
-    Integration.validations.push(handler)
-  }
 
   subscribe<T extends Facade>(name: EventName<T>, handler: EventHandler) {
     this.subscriptions.set(name, handler.bind(this))
