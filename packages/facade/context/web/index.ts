@@ -5,15 +5,17 @@ import * as Spec from '../../../spec/context/web'
 export class Web extends BaseContext implements Spec.Web {
   channel = 'web' as 'web'
   public campaign: Campaign
-  constructor(properties: any) {
+  public page: Window
+  constructor(properties: Spec.Web) {
     super(properties)
     this.campaign = new Campaign(properties.campaign)
+    this.page = new Window(properties.page)
   }
 }
 
 export class Campaign extends Facade<Spec.Campaign> implements Spec.Campaign {
-  constructor(event: any) {
-    super(event)
+  constructor(properties: Spec.Campaign) {
+    super(properties)
   }
 
   get content() {
@@ -34,5 +36,27 @@ export class Campaign extends Facade<Spec.Campaign> implements Spec.Campaign {
 
   get term() {
     return this.enforce.string(this.toJSON().term)
+  }
+}
+
+export class Window extends Facade<Spec.Window> implements Spec.Window {
+  get path() {
+    return this.toJSON().path
+  }
+
+  get referrer() {
+    return this.toJSON().referrer
+  }
+
+  get search() {
+    return this.toJSON().search
+  }
+
+  get title()  {
+    return this.toJSON().title
+  }
+
+  get url() {
+    return this.toJSON().url
   }
 }
