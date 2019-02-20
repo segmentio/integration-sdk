@@ -13,6 +13,7 @@ class Amplitude extends Integration {
 
   async orderCompleted(event: Track<OrderCompleted>) {
     const payload = this.mapper.orderCompleted(event)
+    console.log(payload)
     return new Success()
   }
 

@@ -77,7 +77,7 @@ function contextFactory(context: any): Context.Mobile | Context.Web | Context.Se
       return new Context.Server(context)
     }
   }
-  context.channel = 'server'
+  context = { channel: 'server' }
   return new Context.Server(context)
 }
 

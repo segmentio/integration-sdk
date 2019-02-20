@@ -58,6 +58,9 @@ export class Mapper {
   }
 
   orderCompleted(event: Track<OrderCompleted>): RevenuePayload[] {
+    if (!event.properties.products.length) {
+      throw new ValidationError('You must specify at least one product in an OrderCompleted event')
+    }
     return event.properties.products.map(product => {
       if (!product.price) {
         throw new ValidationError('Price is a required property for all products in an OrderCompleted event')
