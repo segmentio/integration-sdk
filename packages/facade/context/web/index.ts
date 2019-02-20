@@ -2,14 +2,13 @@ import { BaseContext } from '../common'
 import { Facade } from '../../src'
 import * as Spec from '../../../spec/context/web'
 
-export class Web extends BaseContext implements Spec.Web {
-  channel = 'web' as 'web'
+export class Web extends BaseContext<Spec.Web> implements Spec.Web {
   public campaign: Campaign
   public page: Window
   constructor(properties: Spec.Web) {
     super(properties)
-    this.campaign = new Campaign(properties.campaign)
-    this.page = new Window(properties.page)
+    this.campaign = new Campaign(this.toJSON().campaign)
+    this.page = new Window(this.toJSON().page)
   }
 }
 

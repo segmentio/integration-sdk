@@ -1,14 +1,19 @@
 import { Facade } from '../../src'
-import * as Spec from '../../../spec/context/common'
+import { Base } from '../../../spec/context/common'
+import { Server } from '../../../spec/context/server'
+import { Mobile } from '../../../spec/context/mobile'
+import { Web } from '../../../spec/context/Web'
 
 /**
  * Base Context
  */
-export class BaseContext extends Facade<Spec.Base> implements Spec.Base {
-  public channel: 'mobile' | 'web' | 'server'
-  constructor(event: any) {
+export class BaseContext<T extends Mobile | Web | Server> extends Facade<Base> implements Base {
+  constructor(event: T) {
     super(event)
-    this.channel = event.channel
+  }
+
+  get channel(): T["channel"] {
+    return this.toJSON().channel
   }
 
   get ip() {
@@ -19,11 +24,7 @@ export class BaseContext extends Facade<Spec.Base> implements Spec.Base {
     return this.toJSON().locale
   }
 
-  get timezone() {
-    return this.toJSON().timezone
-  }
-
   get userAgent() {
-    return this.enforce.string(this.toJSON().userAgent || this.toJSON().user_agent as Spec.Base["userAgent"])
+    return this.enforce.string(this.toJSON().userAgent || this.toJSON().user_agent as Base["userAgent"])
   }
 }

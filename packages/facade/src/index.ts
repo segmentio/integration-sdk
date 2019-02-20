@@ -20,9 +20,15 @@ class Enforcer {
 
 export class Facade<T = { [key: string]: any }> {
 	protected enforce = new Enforcer()
-	constructor(event: T & { [key: string]: any } = {} as T) {
+	constructor(properties: T & { [key: string]: any } = {} as T) {
+		let p = properties
+
+		if (typeof p !== 'object' || p == null) {
+			p = {} as T & { [key: string]: any }
+		}
+
 		this.toJSON = () => {
-			return event
+			return p
 		}
 	}
 	toJSON(): T & { [key: string]: any } {

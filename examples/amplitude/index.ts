@@ -42,4 +42,4 @@ const server = new Server(Amplitude)
 //   }
 // }).then(console.log).catch(console.error)
 
-// server.listen()
+server.listen()

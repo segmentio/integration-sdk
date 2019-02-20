@@ -42,6 +42,7 @@ export class Server {
       } else {
         status = 500
       }
+      console.error(error)
       res.send({ status, error })
     }
   }

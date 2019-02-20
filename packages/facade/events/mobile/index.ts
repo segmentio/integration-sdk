@@ -81,9 +81,9 @@ class Campaign extends Facade<Spec.Campaign> implements Spec.Campaign {
 
 export class InstallAttributed extends Facade<Spec.InstallAttributed> implements Spec.InstallAttributed {
   public campaign: Campaign
-  constructor(event: Spec.InstallAttributed) {
-    super(event)
-    this.campaign = new Campaign(event.campaign)
+  constructor(properties: Spec.InstallAttributed) {
+    super(properties)
+    this.campaign = new Campaign(this.toJSON().campaign)
   }
 
   get provider () {
@@ -93,17 +93,17 @@ export class InstallAttributed extends Facade<Spec.InstallAttributed> implements
 
 export class PushNotificationReceived extends Facade<Spec.PushNotificationReceived> implements Spec.PushNotificationReceived {
   public campaign: Campaign
-  constructor(event: Spec.PushNotificationReceived) {
-    super(event)
-    this.campaign = new Campaign(event.campaign)
+  constructor(properties: Spec.PushNotificationReceived) {
+    super(properties)
+    this.campaign = new Campaign(this.toJSON().campaign)
   }
 }
 
 export class PushNotificationTapped extends Facade<Spec.PushNotificationTapped> implements Spec.PushNotificationTapped {
   public campaign: Campaign
-  constructor(event: Spec.PushNotificationTapped) {
-    super(event)
-    this.campaign = new Campaign(event.campaign)
+  constructor(properties: Spec.PushNotificationTapped) {
+    super(properties)
+    this.campaign = new Campaign(this.toJSON().campaign)
   }
 
   get action () {

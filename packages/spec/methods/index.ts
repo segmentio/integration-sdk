@@ -1,5 +1,6 @@
 import { Mobile } from '../context/mobile'
 import { Web, Window } from '../context/web'
+import { Server } from '../context/server'
 
 export type Methods = 'track' | 'identify' | 'page' | 'group'
 
@@ -11,7 +12,7 @@ export interface BasePayload {
   type: Methods
   userId?: string
   anonymousId?: string
-  context: Web | Mobile
+  context: Web | Mobile | Server
 }
 
 export interface Track<T = { [key: string]: any }> extends BasePayload {

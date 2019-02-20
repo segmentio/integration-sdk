@@ -2,24 +2,23 @@ import { Facade } from '../../src'
 import { BaseContext } from '../common'
 import * as Spec from '../../../spec/context/mobile'
 
-export class Mobile extends BaseContext implements Spec.Mobile {
-  public channel = 'mobile' as 'mobile'
+export class Mobile extends BaseContext<Spec.Mobile> implements Spec.Mobile {
   public app: App
   public device: Device
   public network: Network
   public os: OS
-  constructor(properties: any) {
+  constructor(properties: Spec.Mobile) {
     super(properties)
-    this.app = new App(properties.app)
-    this.device = new Device(properties.device)
-    this.network = new Network(properties.network)
-    this.os = new OS(properties.os)
+    this.app = new App(this.toJSON().app)
+    this.device = new Device(this.toJSON().device)
+    this.network = new Network(this.toJSON().network)
+    this.os = new OS(this.toJSON().os)
   }
 }
 
 export class App extends Facade<Spec.App> implements Spec.App {
-  constructor(event: any) {
-    super(event)
+  constructor(properties: any) {
+    super(properties)
   }
   get build() {
     return this.toJSON().build
@@ -35,8 +34,8 @@ export class App extends Facade<Spec.App> implements Spec.App {
 }
 
 export class Device extends Facade<Spec.Device> implements Spec.Device {
-  constructor(event: any) {
-    super(event)
+  constructor(properties: any) {
+    super(properties)
   }
 
   get id() {
@@ -65,8 +64,8 @@ export class Device extends Facade<Spec.Device> implements Spec.Device {
 }
 
 export class Network extends Facade<Spec.Network> implements Spec.Network {
-  constructor(event: any) {
-    super(event)
+  constructor(properties: any) {
+    super(properties)
   }
 
   get bluetooth() {
@@ -87,8 +86,8 @@ export class Network extends Facade<Spec.Network> implements Spec.Network {
 }
 
 export class OS extends Facade<Spec.OS> implements Spec.OS {
-  constructor(event: any) {
-    super(event)
+  constructor(properties: any) {
+    super(properties)
   }
 
   get name() {

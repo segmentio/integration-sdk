@@ -63,18 +63,31 @@ function toFacade<T extends Facade>(name: string, properties: object) {
   return new Facade(properties) as T
 }
 
+function contextFactory(context: any): Context.Mobile | Context.Web | Context.Server {
+  if (typeof context === 'object' && context != null) {
+    if (context.channel === 'web') {
+      return new Context.Web(context)
+    }
+
+    if (context.channel === 'mobile') {
+      return new Context.Mobile(context)
+    }
+
+    if (context.channel === 'server') {
+      return new Context.Server(context)
+    }
+  }
+  context.channel = 'server'
+  return new Context.Server(context)
+}
+
 class Message extends Facade<Spec.BasePayload> implements Spec.BasePayload {
-  public context: Context.Mobile | Context.Web
+  public context: Context.Mobile | Context.Web | Context.Server
   public type: Spec.Methods
   constructor(event: Spec.BasePayload) {
     super(event)
     this.type = event.type
-    const channel = event.context.channel
-    if (channel === 'web') {
-      this.context = new Context.Web(event.context as Context.Web)
-    } else {
-      this.context = new Context.Mobile(event.context)
-    }
+    this.context = contextFactory(event.context)
   }
 
   get userId() {

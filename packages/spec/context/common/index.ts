@@ -5,5 +5,4 @@ export interface Base {
   ip?: string
   locale?: string
   userAgent?: string
-  timezone?: string
 }
