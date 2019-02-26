@@ -6,6 +6,21 @@ export interface IntegrationResponse {
   message: string
 }
 
+export class MissingRequiredProperty<T extends { [x: string]: any }, K1 extends keyof T, K2 extends keyof T[K1], K3 extends keyof T[K1][K2], K4 extends keyof T[K1][K2][K3], K5 extends keyof T[K1][K2][K3][K4], K6 extends keyof T[K1][K2][K3][K4][K5]> implements IntegrationResponse {
+  status = 400 as statusCode
+  name = 'MissingRequiredProperty'
+  message ='string'
+  constructor(root: T, key1: K1)
+  constructor(root: T, key1: K1, key2?: K2)
+  constructor(root: T, key1: K1, key2?: K2, key3?: K3)
+  constructor(root: T, key1: K1, key2?: K2, key3?: K3, key4?: K4)
+  constructor(root: T, key1: K1, key2?: K2, key3?: K3, key4?: K4, key5?: K5)
+  constructor(root: T, key1: K1, key2?: K2, key3?: K3, key4?: K4, key5?: K5, key6?: K6) {
+    const path = Array.from(arguments).slice(1).join('.')
+    this.message = `Missing required property: ${path}.`
+  }
+}
+
 export class ValidationError implements IntegrationResponse {
   status = 400 as statusCode
   name = 'ValidationError'

@@ -1,6 +1,7 @@
-import { Track, Identify, SpecEvents } from '../../packages/facade/methods'
-import { Facade } from '../../packages/facade'
+import { Track, Identify, SpecEvents, Page, Group } from '../../lib/facade/methods'
+import { Facade } from '../../lib/facade'
 import { IntegrationResponse, EventNotSupported } from './responses'
+import * as Spec from '../../lib/spec/methods'
 
 type Filter<Base, Condition> = {
   [Key in keyof Base]:
@@ -26,5 +27,38 @@ export abstract class Integration {
 
   async identify(event: Identify): Promise<IntegrationResponse> {
     return new EventNotSupported('identify')
+  }
+
+  async page(event: Page): Promise<IntegrationResponse> {
+    return new EventNotSupported('page')
+  }
+
+  async group(event: Group): Promise<IntegrationResponse> {
+    return new EventNotSupported('group')
+  }
+
+  public async handle(event: Spec.Track | Spec.Identify | Spec.Page | Spec.Group): Promise<IntegrationResponse> {
+    if (event.type === 'track') {
+      const subscription = this.subscriptions.get(event.name)
+      if (subscription) {
+        return await subscription(new Track(event))
+      }
+      return await this.track(new Track(event))
+    }
+
+    if (event.type === 'identify') {
+      return await this.identify(new Identify(event))
+    }
+
+    if (event.type === 'group') {
+      return await this.group(new Group(event))
+    }
+
+    if (event.type === 'page') {
+      return await this.page(new Page(event))
+    }
+
+    // This line should not be reachable but must be defined for TS exhaustiveness checks.
+    throw new Error(`Could not recognize event type ${event!.type}`)
   }
 }

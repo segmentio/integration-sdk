@@ -1,5 +1,5 @@
 class Enforcer {
-	stringOrNumber<T>(property: T): T | undefined {
+	stringOrNumber<T extends (string | number) | undefined>(property: T): T | undefined {
 		if (this.string(property) || this.number(property)) {
 			return property
 		}

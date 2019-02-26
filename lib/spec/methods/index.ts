@@ -1,3 +1,4 @@
+import * as Ecommerce from '../events/ecommerce'
 import { Mobile } from '../context/mobile'
 import { Web, Window } from '../context/web'
 import { Server } from '../context/server'
@@ -21,6 +22,10 @@ export interface Track<T = { [key: string]: any }> extends BasePayload {
   properties: T
 }
 
+export interface OrderCompleted extends Track<Ecommerce.OrderCompleted> {
+  name: 'Order Completed'
+}
+
 export interface Identify extends BasePayload {
   type: 'identify'
   traits: object
@@ -28,7 +33,7 @@ export interface Identify extends BasePayload {
 
 export interface Page extends BasePayload {
   type: 'page'
-  properties: Window
+  properties: { [key: string]: any } & Window
 }
 
 export interface Company {
@@ -41,5 +46,5 @@ export interface Company {
 
 export interface Group extends BasePayload {
   type: 'group'
-  traits: Company
+  traits: { [key: string]: any } & Company
 }

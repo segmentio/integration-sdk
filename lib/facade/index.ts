@@ -1,5 +1,5 @@
 export {
-  Track, Identify
+  Track, Identify, Page, Group, Message
 } from './methods'
 
 export {

@@ -38,7 +38,7 @@ const specEvents = {
   'Product Added': Ecommerce.ProductAdded,
   'Product List Filtered': Ecommerce.ProductListFiltered,
   'Product Removed': Ecommerce.ProductRemoved,
-  'PromotionClicked': Ecommerce.PromotionClicked,
+  'Promotion Clicked': Ecommerce.PromotionClicked,
   'Promotion Viewed': Ecommerce.PromotionViewed,
 
   // Mobile
@@ -81,7 +81,7 @@ function contextFactory(context: any): Context.Mobile | Context.Web | Context.Se
   return new Context.Server(context)
 }
 
-class Message extends Facade<Spec.BasePayload> implements Spec.BasePayload {
+export class Message extends Facade<Spec.BasePayload> implements Spec.BasePayload {
   public context: Context.Mobile | Context.Web | Context.Server
   public type: Spec.Methods
   constructor(event: Spec.BasePayload) {
@@ -91,7 +91,7 @@ class Message extends Facade<Spec.BasePayload> implements Spec.BasePayload {
   }
 
   get userId() {
-    const userId = this.toJSON().userId || this.toJSON().user_id
+    const userId = this.toJSON().userId || this.toJSON().user_id as Spec.BasePayload["userId"]
     return this.enforce.stringOrNumber(userId)
   }
 

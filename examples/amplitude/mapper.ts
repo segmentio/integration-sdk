@@ -1,4 +1,4 @@
-import { Track, Identify, OrderCompleted } from '../../packages/facade'
+import { Track, Identify, OrderCompleted } from '../../lib/facade'
 import { ValidationError } from '../../src/integration/responses'
 import {
   MobilePayload,

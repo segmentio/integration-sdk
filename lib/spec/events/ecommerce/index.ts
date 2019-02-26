@@ -1,5 +1,5 @@
 export interface Product {
-  productId?: string
+  productId?: string | number
   sku?: string
   category?: string
   name?: string
@@ -78,19 +78,19 @@ export interface CheckoutStarted {
   /**
    * Checkout transaction ID
    */
-  checkoutId?: string
+  checkoutId?: string | number
   orderId?: string
-  affiliation: string
-  total: number
-  revenue: number
-  shipping: number
-  tax: number
-  discount: number
+  affiliation?: string
+  total?: number
+  revenue?: number
+  shipping?: number
+  tax?: number
+  discount?: number
   /**
    * Coupon Id
    */
   coupon?: string
-  currency: string
+  currency?: string
   products: Product[]
 }
 

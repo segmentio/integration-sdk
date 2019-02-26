@@ -1,8 +1,9 @@
 import { Integration } from '../../src/integration/index'
 import { Success } from '../../src/integration/responses'
-import { Track, Identify, OrderCompleted } from '../../packages/facade'
+import { Track, Identify, OrderCompleted } from '../../lib/facade'
 import { Server } from '../../src/server'
 import { Mapper } from './mapper'
+import { pathOf } from 'ts-pathof';
 
 class Amplitude extends Integration {
   private mapper = new Mapper()
@@ -13,7 +14,6 @@ class Amplitude extends Integration {
 
   async orderCompleted(event: Track<OrderCompleted>) {
     const payload = this.mapper.orderCompleted(event)
-    console.log(payload)
     return new Success()
   }
 

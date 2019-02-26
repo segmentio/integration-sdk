@@ -1,60 +1,53 @@
 import { Facade } from '../../src'
 import * as Spec from '../../../spec/events/ecommerce'
 
-function assertString<T>(value: T): T | undefined {
-  const type = typeof value
-  if (type === 'string') {
-    return value
-  }
-}
-
 class Product extends Facade<Spec.Product> implements Spec.Product {
   get brand() {
-    return assertString(this.toJSON().brand)
+    return this.enforce.string(this.toJSON().brand)
   }
 
   get category() {
-    return this.toJSON().category
+    return this.enforce.string(this.toJSON().category)
   }
 
   get coupon() {
-    return this.toJSON().coupon
+    return this.enforce.string(this.toJSON().coupon)
   }
 
   get imageUrl() {
-    return this.toJSON().imageUrl || this.toJSON().image_url as Spec.Product["imageUrl"]
+    return this.enforce.string(this.toJSON().imageUrl || this.toJSON().image_url as Spec.Product["imageUrl"])
   }
 
   get name() {
-    return this.toJSON().name
+    return this.enforce.string(this.toJSON().name)
   }
 
   get position() {
-    return this.toJSON().position
+    return this.enforce.number(this.toJSON().position)
   }
 
   get price() {
-    return this.toJSON().price
+    return this.enforce.number(this.toJSON().price)
   }
 
   get productId() {
-    return this.toJSON().productId || this.toJSON().product_id as Spec.Product["productId"]
+    return this.enforce.stringOrNumber(this.toJSON().productId || this.toJSON().product_id as Spec.Product["productId"])
   }
 
   get quantity() {
-    return this.enforce.number(this.toJSON().quantity)
+    return this.enforce.number(this.enforce.number(this.toJSON().quantity))
   }
 
   get sku() {
-    return this.enforce.string(this.toJSON().sku)
+    return this.enforce.string(this.enforce.string(this.toJSON().sku))
   }
 
   get url() {
-    return this.enforce.string(this.toJSON().url)
+    return this.enforce.string(this.enforce.string(this.toJSON().url))
   }
 
   get variant() {
-    return this.toJSON().variant
+    return this.enforce.string(this.toJSON().variant)
   }
 }
 
@@ -66,48 +59,49 @@ export class OrderCompleted extends Facade<Spec.OrderCompleted> implements Spec.
     const products = this.toJSON().products
     if (Array.isArray(products)) {
       this.products = products.map(product => new Product(product))
+    } else {
+      this.products = []
     }
-    this.products = []
   }
 
   get affiliation() {
-    return this.toJSON().affiliation
+    return this.enforce.string(this.toJSON().affiliation)
   }
 
   get checkoutId() {
-    return this.toJSON().checkoutId || this.toJSON().checkout_id as Spec.OrderCompleted["checkoutId"]
+    return this.enforce.stringOrNumber(this.toJSON().checkoutId || this.toJSON().checkout_id as Spec.OrderCompleted["checkoutId"])
   }
 
   get coupon() {
-    return this.enforce.string(this.toJSON().coupon)
+    return this.enforce.string(this.enforce.string(this.toJSON().coupon))
   }
 
   get currency() {
-    return this.toJSON().currency
+    return this.enforce.string(this.toJSON().currency)
   }
 
   get discount() {
-    return this.toJSON().discount
+    return this.enforce.stringOrNumber(this.toJSON().discount)
   }
 
   get orderId() {
-    return this.toJSON().orderId || this.toJSON().order_id as Spec.OrderCompleted["orderId"]
+    return this.enforce.stringOrNumber(this.toJSON().orderId || this.toJSON().order_id as Spec.OrderCompleted["orderId"])
   }
 
   get revenue() {
-    return this.toJSON().revenue
+    return this.enforce.number(this.toJSON().revenue)
   }
 
   get shipping() {
-    return this.toJSON().shipping
+    return this.enforce.string(this.toJSON().shipping)
   }
 
   get tax() {
-    return this.toJSON().tax
+    return this.enforce.number(this.toJSON().tax)
   }
 
   get total() {
-    return this.toJSON().total
+    return this.enforce.number(this.toJSON().total)
   }
 }
 
