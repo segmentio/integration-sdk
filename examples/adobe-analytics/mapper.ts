@@ -14,9 +14,14 @@ export class Mapper {
   }
 
   private mapContextData(event: Track | Page): ContextData {
-    const properties = event.properties
+    const properties = event.properties.toJSON()
 
-    return _.deepReduce<ContextData>(properties, (accumulator, value, key) => {
+    function iterator(accumulator: ContextData, value: unknown, key: string): ContextData {
+      if (_.isObject(value)) {
+        accumulator[key] = _.transform(value, iterator)
+        return accumulator
+      }
+
       if (typeof value === 'string' || typeof value === 'number') {
         accumulator[key] = value
       }
@@ -26,6 +31,8 @@ export class Mapper {
       }
 
       return accumulator
-    })
+    }
+
+    return _.transform(properties, iterator)
   }
 }

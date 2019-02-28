@@ -1,7 +1,7 @@
 import { Facade } from '../../src'
 import * as Spec from '../../../spec/events/ecommerce'
 
-class Product extends Facade<Spec.Product> implements Spec.Product {
+export class Product extends Facade<Spec.Product> implements Spec.Product {
   get brand() {
     return this.enforce.string(this.toJSON().brand)
   }
@@ -105,9 +105,9 @@ export class OrderCompleted extends Facade<Spec.OrderCompleted> implements Spec.
   }
 }
 
-export class ProductListViewed extends Facade<Spec.ProductListViewed> implements Spec.ProductListViewed {
+export class ProductList extends Facade<Spec.ProductList> implements Spec.ProductList {
   public products: Product[]
-  constructor(event: Spec.ProductListViewed) {
+  constructor(event: Spec.ProductList) {
     super(event)
     const products = this.toJSON().products
     if (Array.isArray(products)) {
@@ -123,6 +123,8 @@ export class ProductListViewed extends Facade<Spec.ProductListViewed> implements
     return this.toJSON().listId || this.toJSON().list_id as Spec.ProductListViewed["listId"]
   }
 }
+
+export class ProductListViewed extends ProductList {}
 
 class Filter extends Facade<Spec.Filter> implements Spec.Filter {
   get type() {

@@ -1,3 +1,5 @@
+import { Message } from '../../lib/facade';
+
 type statusCode = 200 | 400 | 500
 
 export interface IntegrationResponse {
@@ -27,11 +29,11 @@ export class ValidationError implements IntegrationResponse {
   constructor(public message: string) {}
 }
 
-export class EventNotSupported implements IntegrationResponse {
+export class EventNotSupported<T extends Message> implements IntegrationResponse {
   status = 400 as statusCode
   name = 'EventNotSupported'
   message: string
-  constructor(event: string) {
+  constructor(event: T["type"]) {
     this.message = `Event ${event} not supported.`
   }
 }

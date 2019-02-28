@@ -52,7 +52,7 @@ export class Mapper {
   track(event: Track): TrackPayload {
     return {
       ...this.mapBasePayload(event),
-      event_type: event.name,
+      event_type: event.event,
       event_properties: event.properties.toJSON(),
     }
   }

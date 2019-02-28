@@ -77,7 +77,7 @@ function contextFactory(context: any): Context.Mobile | Context.Web | Context.Se
       return new Context.Server(context)
     }
   }
-  context = { channel: 'server' }
+  context.channel = 'server'
   return new Context.Server(context)
 }
 
@@ -118,13 +118,13 @@ export class Message extends Facade<Spec.BasePayload> implements Spec.BasePayloa
 
 export class Track<T extends Facade = Facade> extends Message implements Spec.Track {
   public properties: T
-  public name: string
+  public event: string
   public type: 'track'
   constructor(event: Spec.Track) {
     super(event)
     this.type = event.type
-    this.name = event.name
-    this.properties = toFacade(event.name, event.properties)
+    this.event = event.event
+    this.properties = toFacade(event.event, event.properties)
   }
 }
 

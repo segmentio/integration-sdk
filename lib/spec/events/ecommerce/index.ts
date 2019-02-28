@@ -35,11 +35,13 @@ export interface Sorts {
   value?: string
 }
 
-export interface ProductListViewed {
+export interface ProductList {
   listId: string
   category:	string
   products: Product[]
 }
+
+export interface ProductListViewed extends ProductList {}
 
 export interface ProductListFiltered extends ProductListViewed {
   /**

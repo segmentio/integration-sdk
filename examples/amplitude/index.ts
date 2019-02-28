@@ -1,13 +1,13 @@
 import { Integration } from '../../src/integration/index'
 import { Success } from '../../src/integration/responses'
 import { Track, Identify, OrderCompleted } from '../../lib/facade'
-import { Server } from '../../src/server'
 import { Mapper } from './mapper'
-import { pathOf } from 'ts-pathof';
 
-class Amplitude extends Integration {
+interface Settings {}
+
+export class Amplitude extends Integration {
   private mapper = new Mapper()
-  constructor() {
+  constructor(public settings: Settings) {
     super()
     this.subscribe<OrderCompleted>('Order Completed', this.orderCompleted)
   }
@@ -28,7 +28,3 @@ class Amplitude extends Integration {
     return new Success()
   }
 }
-
-const server = new Server(Amplitude)
-
-server.listen()

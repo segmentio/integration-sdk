@@ -11,17 +11,20 @@ type Filter<Base, Condition> = {
 type EventName<T extends Facade> = Filter<SpecEvents, T>[keyof SpecEvents]
 
 interface EventHandler {
-  (event: Track<any>): Promise<IntegrationResponse>
+  (event: Track<any>, options?: object): Promise<IntegrationResponse>
 }
 
 export abstract class Integration {
+  public abstract settings: object
   public subscriptions = new Map<string, EventHandler>()
+
+  constructor() {}
 
   subscribe<T extends Facade>(name: EventName<T>, handler: EventHandler) {
     this.subscriptions.set(name, handler.bind(this))
   }
 
-  async track(event: Track): Promise<IntegrationResponse> {
+  async track(event: Track, options: object = {}): Promise<IntegrationResponse> {
     return new EventNotSupported('track')
   }
 
@@ -39,11 +42,11 @@ export abstract class Integration {
 
   public async handle(event: Spec.Track | Spec.Identify | Spec.Page | Spec.Group): Promise<IntegrationResponse> {
     if (event.type === 'track') {
-      const subscription = this.subscriptions.get(event.name)
+      const subscription = this.subscriptions.get(event.event)
       if (subscription) {
-        return await subscription(new Track(event))
+        return await subscription(new Track(event), {})
       }
-      return await this.track(new Track(event))
+      return await this.track(new Track(event), {})
     }
 
     if (event.type === 'identify') {

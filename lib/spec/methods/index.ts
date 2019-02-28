@@ -18,12 +18,12 @@ export interface BasePayload {
 
 export interface Track<T = { [key: string]: any }> extends BasePayload {
   type: 'track'
-  name: string
+  event: string
   properties: T
 }
 
 export interface OrderCompleted extends Track<Ecommerce.OrderCompleted> {
-  name: 'Order Completed'
+  event: 'Order Completed'
 }
 
 export interface Identify extends BasePayload {

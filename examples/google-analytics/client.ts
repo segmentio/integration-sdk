@@ -1,6 +1,7 @@
 import axios, { AxiosRequestConfig } from 'axios'
-import { PageviewHit, Hit, EventHit } from './types';
+import { PageviewHit, Hit, EventHit, TransactionHit, ItemHit } from './types';
 import * as qs from 'querystring'
+import _ from '../../lib/utils'
 
 abstract class IntegrationClient {
   abstract endpoint: string
@@ -18,7 +19,8 @@ export class Client extends IntegrationClient {
   endpoint = 'https://www.google-analytics.com/collect'
 
   private async request<T extends Hit>(payload: T, userAgent: string) {
-    return await this.post<GoogleAnalyticsResponse>(this.endpoint, qs.stringify(payload), {
+    const nonNullPayload = _.deepReject(payload)
+    const res = await this.post<GoogleAnalyticsResponse>(this.endpoint, qs.stringify(nonNullPayload), {
       headers: {
         'User-Agent': userAgent
       }
@@ -29,7 +31,7 @@ export class Client extends IntegrationClient {
     return await this.request(payload, userAgent)
   }
 
-  async event(payload: EventHit, userAgent: string) {
+  async event(payload: EventHit | TransactionHit | ItemHit, userAgent: string) {
     return await this.request(payload, userAgent)
   }
 }
