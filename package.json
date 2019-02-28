@@ -1,7 +1,15 @@
 {
+  "name": "integration-sdk",
+  "version": "0.0.1",
+  "description": "",
+  "main": "dist/",
   "scripts": {
-    "build": "tsc"
+    "build": "tsc",
+    "install": "tsc"
   },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
   "dependencies": {
     "@types/aws-lambda": "^8.10.19",
     "@types/axios": "^0.14.0",
