@@ -22,10 +22,10 @@
     "express": "^4.16.4",
     "lodash": "^4.17.11",
     "restyped-axios": "^2.0.0",
-    "ts-pathof": "^1.2.7",
-    "typescript": "^3.2.4"
+    "ts-pathof": "^1.2.7"
   },
   "devDependencies": {
-    "ts-essentials": "^2.0.2"
+    "ts-essentials": "^2.0.2",
+    "typescript": "^3.3.3333"
   }
 }
