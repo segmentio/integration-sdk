@@ -3,7 +3,6 @@ import { Success, ValidationError } from '../../src/integration/responses'
 import { Track, OrderCompleted, Message, ProductRemoved } from '../../lib/facade'
 import { Mapper } from './mapper'
 import { Client } from './client';
-import { Track as TrackFixture } from 'chaos-fixtures'
 
 export interface Settings {
   enableEnhancedEcommerce: boolean
@@ -60,14 +59,3 @@ export class GoogleAnalytics extends Integration {
     return userAgent
   }
 }
-
-const fixture = new TrackFixture(event => {
-  return event
-})
-
-const googleAnalytics = new GoogleAnalytics({
-  enableEnhancedEcommerce: true,
-  trackingId: 'UA-80975481-1'
-})
-
-googleAnalytics.handle(fixture.payload as Track).then(console.log).catch(console.error)
