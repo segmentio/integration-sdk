@@ -2,7 +2,7 @@ import { Track, Identify, Group, Page } from '../../lib/facade/events'
 import { IntegrationResponse, EventNotSupported } from './responses'
 import { toFacade, SpecEvents } from './to-facade'
 import { Facade } from '../../lib/facade/src'
-import * as Spec from '../../../spec/events'
+import * as Spec from '@segment/spec/events'
 
 type Filter<Base, Condition> = {
   [Key in keyof Base]:
@@ -25,7 +25,7 @@ export abstract class Integration {
     this.subscriptions.set(name, handler.bind(this))
   }
 
-  async track(event: Track, options: object = {}): Promise<IntegrationResponse> {
+  async track(event: Track, options?: object): Promise<IntegrationResponse> {
     return new EventNotSupported('track')
   }
 
