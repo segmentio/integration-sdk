@@ -1,4 +1,4 @@
-import { Track, Page } from '../../lib/facade'
+import { Track, Page } from '../../lib/facade/events'
 import { Payload, ContextData } from './types'
 import _ from '../../lib/utils'
 

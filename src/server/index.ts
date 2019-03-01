@@ -2,7 +2,7 @@ import { Integration } from '../integration'
 import { IntegrationResponse } from '../integration/responses'
 import * as bodyParser from 'body-parser'
 import * as express from 'express'
-import * as Spec from '../../lib/spec/methods'
+import * as Spec from '@segment/spec/events'
 
 const app = express()
 

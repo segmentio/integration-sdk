@@ -11,15 +11,10 @@ import {
   EnhancedTransactionHit,
   ItemHit
 } from './types'
-import {
-  Track,
-  Identify,
-  OrderCompleted,
-  Page
-} from '../../lib/facade'
+import { Track, Identify, OrderCompleted, Page } from '../../lib/facade/events'
 import { ValidationError } from '../../src'
-import { Product, ProductList } from '../../lib/facade/events/ecommerce'
-import { Options } from '.';
+import { Product, ProductList } from '../../lib/facade/types/ecommerce'
+import { Options } from '.'
 import { URL } from 'url'
 
 class ProductMapper {
@@ -54,11 +49,11 @@ class ProductMapper {
       list.products.forEach((product, index) => {
         const productIndex = index++
         const prefix = `il${listIndex}pi`
-        this.setSku(prefix, index, product.sku)
-        this.setName(prefix, index, product.name)
-        this.setBrand(prefix, index, product.brand)
-        this.setCategory(prefix, index, product.category)
-        this.setVariant(prefix, index, product.variant)
+        this.setSku(prefix, productIndex, product.sku)
+        this.setName(prefix, productIndex, product.name)
+        this.setBrand(prefix, productIndex, product.brand)
+        this.setCategory(prefix, productIndex, product.category)
+        this.setVariant(prefix, productIndex, product.variant)
       })
     })
     return this.map
@@ -120,10 +115,11 @@ interface EnhancedEcommerceProperties {
 }
 
 export class Mapper {
-  constructor(private enableEnhancedEcommerce: boolean, private trackingId: string) {}
+  constructor(
+    private enableEnhancedEcommerce: boolean,
+    private trackingId: string
+  ) {}
   /**
-   *
-   * @param {Track} event
    * @param {EnhancedEcommerceProperties} enhancedEcommerceProperties - Optional properties to map to [Enhanced Ecommerce](https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#enhanced-ecomm) parameters. This mapping will only occur if the `enableEnhancedEcommerce` setting passed in to the `Mapper` constructor is `true`.
    */
   event(
@@ -139,7 +135,6 @@ export class Mapper {
     }
 
     payload.ev = event.properties.toJSON()['value']
-
 
     if (this.enableEnhancedEcommerce && enhancedEcommerceProperties) {
       return Object.assign(
@@ -166,7 +161,11 @@ export class Mapper {
   /**
    * @description Builds a `transaction` hit payload. Returns either an enhanced ecommerce `transaction` hit or, if the user is not using enhanced ecommerce, a tuple where the first element is a `transaction` hit and the remaning n elements are `item` hits.
    */
-  transaction(event: Track<OrderCompleted>, enableEnhancedEcommerce: boolean, options: Options): [TransactionHit, ...ItemHit[]] | EnhancedTransactionHit {
+  transaction(
+    event: OrderCompleted,
+    enableEnhancedEcommerce: boolean,
+    options: Options
+  ): [TransactionHit, ...ItemHit[]] | EnhancedTransactionHit {
     if (!event.properties.orderId) {
       throw new ValidationError('OrderId is required.')
     }
@@ -178,12 +177,18 @@ export class Mapper {
     }
 
     if (enableEnhancedEcommerce) {
-      return Object.assign(transaction, this.enhancedEcommerceParameters({
-        products: event.properties.products,
-        action: 'purchase'
-      }))
+      return Object.assign(
+        transaction,
+        this.enhancedEcommerceParameters({
+          products: event.properties.products,
+          action: 'purchase'
+        })
+      )
     }
-    return [transaction, ...this.item(event, event.properties.products, options)]
+    return [
+      transaction,
+      ...this.item(event, event.properties.products, options)
+    ]
   }
 
   item(event: Track, products: Product[], options: Options): ItemHit[] {
@@ -209,10 +214,6 @@ export class Mapper {
   private mapContentInformation(
     event: Track | Identify | Page
   ): ContentInformation {
-    if (event.context.channel === 'mobile') {
-      return {}
-    }
-
     const context = event.context
     const pageData = event instanceof Page ? event.properties : context.page
     const url = new URL(pageData.url || '')
@@ -224,7 +225,10 @@ export class Mapper {
     }
   }
 
-  private getUserId(event: Track | Identify | Page, options: Options): UserId | ClientId {
+  private getUserId(
+    event: Track | Identify | Page,
+    options: Options
+  ): UserId | ClientId {
     if (options.clientId) {
       return { cid: options.clientId, uid: event.anonymousId }
     }
@@ -237,7 +241,9 @@ export class Mapper {
       return { uid: event.anonymousId, cid: event.userId }
     }
 
-    throw new ValidationError('One of UserId, AnonymousId, or ClientId are required.')
+    throw new ValidationError(
+      'One of UserId, AnonymousId, or ClientId are required.'
+    )
   }
 
   private enhancedEcommerceParameters(

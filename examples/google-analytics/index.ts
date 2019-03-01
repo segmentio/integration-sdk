@@ -1,6 +1,6 @@
 import { Integration } from '../../src/integration/index'
 import { Success, ValidationError } from '../../src/integration/responses'
-import { Track, OrderCompleted, Message, ProductRemoved } from '../../lib/facade'
+import { Track, OrderCompleted, Message, ProductRemoved } from '../../lib/facade/events'
 import { Mapper } from './mapper'
 import { Client } from './client';
 
@@ -29,7 +29,7 @@ export class GoogleAnalytics extends Integration {
     return new Success()
   }
 
-  async orderCompleted(event: Track<OrderCompleted>, options: Options = {}) {
+  async orderCompleted(event: OrderCompleted, options: Options = {}) {
     const payload = this.mapper.transaction(event, this.settings.enableEnhancedEcommerce, options)
     const userAgent = this.getUserAgent(event)
 
@@ -44,7 +44,7 @@ export class GoogleAnalytics extends Integration {
     return new Success()
   }
 
-  async productRemoved(event: Track<ProductRemoved>, options: Options) {
+  async productRemoved(event: ProductRemoved, options: Options) {
     const payload = this.mapper.event(event, options, {
       products: [event.properties],
       action: 'remove'
