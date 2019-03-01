@@ -11,6 +11,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@segment/spec": "https://github.com/segmentio/spec#v2",
     "@types/aws-lambda": "^8.10.19",
     "@types/axios": "^0.14.0",
     "@types/express": "^4.16.1",
@@ -19,6 +20,7 @@
     "axios": "^0.18.0",
     "body-parser": "^1.18.3",
     "express": "^4.16.4",
+    "fp-ts": "^1.14.2",
     "lodash": "^4.17.11",
     "restyped-axios": "^2.0.0",
     "ts-pathof": "^1.2.7"

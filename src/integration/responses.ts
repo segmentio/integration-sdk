@@ -1,4 +1,4 @@
-import { Message } from '../../lib/facade';
+import { Message } from '../../lib/facade/events';
 
 type statusCode = 200 | 400 | 500
 

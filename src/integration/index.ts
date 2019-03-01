@@ -1,7 +1,8 @@
-import { Track, Identify, SpecEvents, Page, Group } from '../../lib/facade/methods'
-import { Facade } from '../../lib/facade'
+import { Track, Identify, Group, Page } from '../../lib/facade/events'
 import { IntegrationResponse, EventNotSupported } from './responses'
-import * as Spec from '../../lib/spec/methods'
+import { toFacade, SpecEvents } from './to-facade'
+import { Facade } from '../../lib/facade/src'
+import * as Spec from '../../../spec/events'
 
 type Filter<Base, Condition> = {
   [Key in keyof Base]:
@@ -10,8 +11,8 @@ type Filter<Base, Condition> = {
 
 type EventName<T extends Facade> = Filter<SpecEvents, T>[keyof SpecEvents]
 
-interface EventHandler {
-  (event: Track<any>, options?: object): Promise<IntegrationResponse>
+interface EventHandler<T = any> {
+  (event: T, options?: object): Promise<IntegrationResponse>
 }
 
 export abstract class Integration {
@@ -20,7 +21,7 @@ export abstract class Integration {
 
   constructor() {}
 
-  subscribe<T extends Facade>(name: EventName<T>, handler: EventHandler) {
+  subscribe<T extends Track>(name: EventName<T>, handler: EventHandler<T>) {
     this.subscriptions.set(name, handler.bind(this))
   }
 
@@ -44,7 +45,11 @@ export abstract class Integration {
     if (event.type === 'track') {
       const subscription = this.subscriptions.get(event.event)
       if (subscription) {
-        return await subscription(new Track(event), {})
+        const facade = toFacade(event.event, event.properties)
+        if (!facade) {
+          throw new Error()
+        }
+        return await subscription(facade, {})
       }
       return await this.track(new Track(event), {})
     }

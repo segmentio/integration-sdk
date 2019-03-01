@@ -1,190 +1,173 @@
-import { Facade } from '../../src'
-import * as Spec from '../../../spec/events/ecommerce'
+import { Track } from '../track'
+import * as Spec from '@segment/spec/events/ecommerce'
+import { Order, ProductList, Product, Promotion, CheckoutStep, Cart } from '../../types/ecommerce'
 
-export class Product extends Facade<Spec.Product> implements Spec.Product {
-  get brand() {
-    return this.enforce.string(this.toJSON().brand)
-  }
-
-  get category() {
-    return this.enforce.string(this.toJSON().category)
-  }
-
-  get coupon() {
-    return this.enforce.string(this.toJSON().coupon)
-  }
-
-  get imageUrl() {
-    return this.enforce.string(this.toJSON().imageUrl || this.toJSON().image_url as Spec.Product["imageUrl"])
-  }
-
-  get name() {
-    return this.enforce.string(this.toJSON().name)
-  }
-
-  get position() {
-    return this.enforce.number(this.toJSON().position)
-  }
-
-  get price() {
-    return this.enforce.number(this.toJSON().price)
-  }
-
-  get productId() {
-    return this.enforce.stringOrNumber(this.toJSON().productId || this.toJSON().product_id as Spec.Product["productId"])
-  }
-
-  get quantity() {
-    return this.enforce.number(this.enforce.number(this.toJSON().quantity))
-  }
-
-  get sku() {
-    return this.enforce.string(this.enforce.string(this.toJSON().sku))
-  }
-
-  get url() {
-    return this.enforce.string(this.enforce.string(this.toJSON().url))
-  }
-
-  get variant() {
-    return this.enforce.string(this.toJSON().variant)
-  }
-}
-
-export class OrderCompleted extends Facade<Spec.OrderCompleted> implements Spec.OrderCompleted {
-  public products: Product[]
-
-  constructor(event: Spec.OrderCompleted) {
+export class PromotionClicked extends Track<Promotion> implements Spec.PromotionClicked {
+  public event: Spec.PromotionClicked["event"]
+  public properties: Promotion
+  constructor(event: Spec.PromotionClicked) {
     super(event)
-    const products = this.toJSON().products
-    if (Array.isArray(products)) {
-      this.products = products.map(product => new Product(product))
-    } else {
-      this.products = []
-    }
-  }
-
-  get affiliation() {
-    return this.enforce.string(this.toJSON().affiliation)
-  }
-
-  get checkoutId() {
-    return this.enforce.stringOrNumber(this.toJSON().checkoutId || this.toJSON().checkout_id as Spec.OrderCompleted["checkoutId"])
-  }
-
-  get coupon() {
-    return this.enforce.string(this.enforce.string(this.toJSON().coupon))
-  }
-
-  get currency() {
-    return this.enforce.string(this.toJSON().currency)
-  }
-
-  get discount() {
-    return this.enforce.stringOrNumber(this.toJSON().discount)
-  }
-
-  get orderId() {
-    return this.enforce.stringOrNumber(this.toJSON().orderId || this.toJSON().order_id as Spec.OrderCompleted["orderId"])
-  }
-
-  get revenue() {
-    return this.enforce.number(this.toJSON().revenue)
-  }
-
-  get shipping() {
-    return this.enforce.string(this.toJSON().shipping)
-  }
-
-  get tax() {
-    return this.enforce.number(this.toJSON().tax)
-  }
-
-  get total() {
-    return this.enforce.number(this.toJSON().total)
+    this.event = event.event
+    this.properties = new Promotion(event.properties)
   }
 }
 
-export class ProductList extends Facade<Spec.ProductList> implements Spec.ProductList {
-  public products: Product[]
-  constructor(event: Spec.ProductList) {
+export class ProductClicked extends Track<Product> implements Spec.ProductClicked {
+  public event: Spec.ProductClicked["event"]
+  public properties: Product
+  constructor(event: Spec.ProductClicked) {
     super(event)
-    const products = this.toJSON().products
-    if (Array.isArray(products)) {
-      this.products = products.map(product => new Product(product))
-    }
-    this.products = []
-  }
-  get category() {
-    return this.toJSON().category
-  }
-
-  get listId() {
-    return this.toJSON().listId || this.toJSON().list_id as Spec.ProductListViewed["listId"]
+    this.event = event.event
+    this.properties = new Product(event.properties)
   }
 }
 
-export class ProductListViewed extends ProductList {}
-
-class Filter extends Facade<Spec.Filter> implements Spec.Filter {
-  get type() {
-    return this.toJSON().type
-  }
-
-  get value() {
-    return this.toJSON().value
+export class ProductViewed extends Track<Product> implements Spec.ProductViewed {
+  public event: Spec.ProductViewed["event"]
+  public properties: Product
+  constructor(event: Spec.ProductViewed) {
+    super(event)
+    this.event = event.event
+    this.properties = new Product(event.properties)
   }
 }
 
-class Sort extends Facade<Spec.Sorts> implements Spec.Sorts {
-  get type() {
-    return this.toJSON().type
-  }
-
-  get value() {
-    return this.toJSON().value
+export class ProductAdded extends Track<Product> implements Spec.ProductAdded {
+  public event: Spec.ProductAdded["event"]
+  public properties: Product
+  constructor(event: Spec.ProductAdded) {
+    super(event)
+    this.event = event.event
+    this.properties = new Product(event.properties)
   }
 }
 
-export class ProductListFiltered extends ProductListViewed implements Spec.ProductListFiltered {
-  public filters: Filter[] = []
-  public sorts: Sort[] = []
+export class ProductRemoved extends Track<Product> implements Spec.ProductRemoved {
+  public event: Spec.ProductRemoved["event"]
+  public properties: Product
+  constructor(event: Spec.ProductRemoved) {
+    super(event)
+    this.event = event.event
+    this.properties = new Product(event.properties)
+  }
+}
+
+export class CartViewed extends Track<Cart> implements Spec.CartViewed {
+  public event: Spec.CartViewed["event"]
+  public properties: Cart
+  constructor(event: Spec.CartViewed) {
+    super(event)
+    this.event = event.event
+    this.properties = new Cart(event.properties)
+  }
+}
+
+export class ProductListViewed extends Track<ProductList> implements Spec.ProductListViewed {
+  public event: Spec.ProductListViewed["event"]
+  public properties: ProductList
+  constructor(event: Spec.ProductListViewed) {
+    super(event)
+    this.event = event.event
+    this.properties = new ProductList(event.properties)
+  }
+}
+
+export class ProductListFiltered extends Track<ProductList> implements Spec.ProductListFiltered {
+  public event: Spec.ProductListFiltered["event"]
+  public properties: ProductList
   constructor(event: Spec.ProductListFiltered) {
     super(event)
-    const filters = event.filters
-    const sorts = event.sorts
-    if (Array.isArray(filters)) {
-      this.filters = filters.map(filter => new Filter(filter))
-    }
-
-    if (Array.isArray(sorts)) {
-      this.sorts = sorts.map(sort => new Sort(sort))
-    }
+    this.event = event.event
+    this.properties = new ProductList(event.properties)
   }
 }
 
-export class PromotionViewed extends Facade<Spec.PromotionViewed> implements Spec.PromotionViewed {
-  get creative() {
-    return this.toJSON().creative
-  }
-
-  get name() {
-    return this.toJSON().name
-  }
-
-  get position() {
-    return this.toJSON().position
-  }
-
-  get promotionId() {
-    return this.toJSON().promotionId
+export class PromotionViewed extends Track<Promotion> implements Spec.PromotionViewed {
+  public event: Spec.PromotionViewed["event"]
+  public properties: Promotion
+  constructor(event: Spec.PromotionViewed) {
+    super(event)
+    this.event = event.event
+    this.properties = new Promotion(event.properties)
   }
 }
 
-export class PromotionClicked extends PromotionViewed {}
+export class CheckoutStarted extends Track<Order> implements Spec.CheckoutStarted {
+  public event: Spec.CheckoutStarted["event"]
+  public properties: Order
+  constructor(event: Spec.CheckoutStarted) {
+    super(event)
+    this.event = event.event
+    this.properties = new Order(event.properties)
+  }
+}
 
-export class ProductClicked extends Product {}
+export class CheckoutStepViewed extends Track<CheckoutStep> implements Spec.CheckoutStepViewed {
+  public event: Spec.CheckoutStepViewed["event"]
+  public properties: CheckoutStep
+  constructor(event: Spec.CheckoutStepViewed) {
+    super(event)
+    this.event = event.event
+    this.properties = new CheckoutStep(event.properties)
+  }
+}
 
-export class ProductAdded extends Product {}
+export class CheckoutStepCompleted extends Track<CheckoutStep> implements Spec.CheckoutStepCompleted {
+  public event: Spec.CheckoutStepCompleted["event"]
+  public properties: CheckoutStep
+  constructor(event: Spec.CheckoutStepCompleted) {
+    super(event)
+    this.event = event.event
+    this.properties = new CheckoutStep(event.properties)
+  }
+}
 
-export class ProductRemoved extends Product {}
+export class PaymentInfoEntered extends Track<CheckoutStep> implements Spec.PaymentInfoEntered {
+  public event: Spec.PaymentInfoEntered["event"]
+  public properties: CheckoutStep
+  constructor(event: Spec.PaymentInfoEntered) {
+    super(event)
+    this.event = event.event
+    this.properties = new CheckoutStep(event.properties)
+  }
+}
+
+export class OrderUpdated extends Track<Order> implements Spec.OrderUpdated {
+  public event: Spec.OrderUpdated["event"]
+  public properties: Order
+  constructor(event: Spec.OrderUpdated) {
+    super(event)
+    this.event = event.event
+    this.properties = new Order(event.properties)
+  }
+}
+
+export class OrderCompleted extends Track<Order> implements Spec.OrderCompleted {
+  public event: Spec.OrderCompleted["event"]
+  public properties: Order
+  constructor(event: Spec.OrderCompleted) {
+    super(event)
+    this.event = event.event
+    this.properties = new Order(event.properties)
+  }
+}
+
+export class OrderRefunded extends Track<Order> implements Spec.OrderRefunded {
+  public event: Spec.OrderRefunded["event"]
+  public properties: Order
+  constructor(event: Spec.OrderRefunded) {
+    super(event)
+    this.event = event.event
+    this.properties = new Order(event.properties)
+  }
+}
+
+export class OrderCancelled extends Track<Order> implements Spec.OrderCancelled {
+  public event: Spec.OrderCancelled["event"]
+  public properties: Order
+  constructor(event: Spec.OrderCancelled) {
+    super(event)
+    this.event = event.event
+    this.properties = new Order(event.properties)
+  }
+}

@@ -1,4 +1,4 @@
-import { Track, Identify, OrderCompleted } from '../../lib/facade'
+import { Track, Identify, OrderCompleted } from '../../lib/facade/events'
 import { ValidationError } from '../../src/integration/responses'
 import {
   MobilePayload,
@@ -19,11 +19,8 @@ export class Mapper {
   }
 
   getId(event: Track | Identify): UserId | DeviceId {
-    let deviceId
+    const deviceId = event.context.device.id
     const userId = event.userId
-    if (event.context.channel === 'mobile' && event.context.device.id) {
-      deviceId = event.context.device.id
-    }
 
     if (userId && deviceId) {
       return { user_id: userId, device_id: deviceId }
@@ -41,9 +38,6 @@ export class Mapper {
   }
 
   mapMobileProperties(event: Track | Identify): MobilePayload {
-    if (event.context.channel !== 'mobile') {
-      return {}
-    }
     return {
       app_version: event.context.app.version
     }
@@ -57,7 +51,7 @@ export class Mapper {
     }
   }
 
-  orderCompleted(event: Track<OrderCompleted>): RevenuePayload[] {
+  orderCompleted(event: OrderCompleted): RevenuePayload[] {
     if (!event.properties.products.length) {
       throw new ValidationError('You must specify at least one product in an OrderCompleted event')
     }

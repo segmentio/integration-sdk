@@ -1,12 +1,16 @@
 import axios, { AxiosRequestConfig } from 'axios'
-import { PageviewHit, Hit, EventHit, TransactionHit, ItemHit } from './types';
+import { PageviewHit, Hit, EventHit, TransactionHit, ItemHit } from './types'
 import * as qs from 'querystring'
 import _ from '../../lib/utils'
 
 abstract class IntegrationClient {
   abstract endpoint: string
   public get = axios.get
-  public async post<T = any>(endpoint: string, data?: any, config?: AxiosRequestConfig) {
+  public async post<T = any>(
+    endpoint: string,
+    data?: any,
+    config?: AxiosRequestConfig
+  ) {
     return await axios.post<T>(endpoint, data, config)
   }
 }
@@ -20,11 +24,15 @@ export class Client extends IntegrationClient {
 
   private async request<T extends Hit>(payload: T, userAgent: string) {
     const nonNullPayload = _.deepReject(payload)
-    const res = await this.post<GoogleAnalyticsResponse>(this.endpoint, qs.stringify(nonNullPayload), {
-      headers: {
-        'User-Agent': userAgent
+    const res = await this.post<GoogleAnalyticsResponse>(
+      this.endpoint,
+      qs.stringify(nonNullPayload),
+      {
+        headers: {
+          'User-Agent': userAgent
+        }
       }
-    })
+    )
   }
 
   async pageview(payload: PageviewHit, userAgent: string) {

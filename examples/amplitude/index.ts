@@ -1,6 +1,6 @@
 import { Integration } from '../../src/integration/index'
 import { Success } from '../../src/integration/responses'
-import { Track, Identify, OrderCompleted } from '../../lib/facade'
+import { Track, Identify, OrderCompleted } from '../../lib/facade/events/'
 import { Mapper } from './mapper'
 
 interface Settings {}
@@ -12,7 +12,7 @@ export class Amplitude extends Integration {
     this.subscribe<OrderCompleted>('Order Completed', this.orderCompleted)
   }
 
-  async orderCompleted(event: Track<OrderCompleted>) {
+  async orderCompleted(event: OrderCompleted) {
     const payload = this.mapper.orderCompleted(event)
     return new Success()
   }
@@ -24,7 +24,6 @@ export class Amplitude extends Integration {
   }
 
   async identify(event: Identify) {
-    console.log(event.traits.email)
     return new Success()
   }
 }
