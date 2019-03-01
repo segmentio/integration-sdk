@@ -1,5 +1,6 @@
 import * as Ecommerce from '../../lib/facade/events/ecommerce'
 import * as Mobile from '../../lib/facade/events/mobile'
+import { Track as SpecTrack } from '@segment/spec/events'
 import { Track } from '../../lib/facade/events';
 
 export interface SpecEvents {
@@ -52,9 +53,9 @@ const specEvents = {
   'Deep Link Opened': Mobile.DeepLinkOpened
 }
 
-export function toFacade(name: string, properties: object) {
-  const SpecFacade = specEvents[name]
+export function toFacade(event: SpecTrack) {
+  const SpecFacade = specEvents[event.event]
   if (SpecFacade) {
-    return new SpecFacade(properties) as Track
+    return new SpecFacade(event) as Track
   }
 }

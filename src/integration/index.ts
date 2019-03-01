@@ -45,7 +45,7 @@ export abstract class Integration {
     if (event.type === 'track') {
       const subscription = this.subscriptions.get(event.event)
       if (subscription) {
-        const facade = toFacade(event.event, event.properties)
+        const facade = toFacade(event)
         if (!facade) {
           throw new Error()
         }

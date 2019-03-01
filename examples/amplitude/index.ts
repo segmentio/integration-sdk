@@ -27,3 +27,24 @@ export class Amplitude extends Integration {
     return new Success()
   }
 }
+
+const amplitude = new Amplitude({})
+
+amplitude.handle({
+  type: 'track',
+  event: 'Order Completed',
+  anonymousId: '21312',
+  context: {},
+  messageId: 'sdlfkjo2384lkjef',
+  properties: {
+    products: [{
+      sku: 'qasdfljhsdfl',
+      price: 10,
+      quantity: 2
+    }]
+  },
+  receivedAt: new Date().toISOString(),
+  sentAt: new Date().toISOString(),
+  timestamp: Date.now().toString(),
+  userId: '12312312'
+}).catch(console.error)
