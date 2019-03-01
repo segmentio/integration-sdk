@@ -4,7 +4,9 @@
 
 "@segment/spec@https://github.com/segmentio/spec#v2":
   version "1.0.0"
-  resolved "https://github.com/segmentio/spec#8cbf039c8823b99d5d5280ded679289bb5a8feec"
+  resolved "https://github.com/segmentio/spec#dff924111cfbce5b1cc9d1355abde332fb635d7a"
+  dependencies:
+    typescript "^3.3.3333"
 
 "@types/aws-lambda@^8.10.19":
   version "8.10.19"
