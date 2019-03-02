@@ -1,4 +1,5 @@
 import { Integration } from '../../src/integration/index'
+import { Server } from '../../src/server'
 import { Success } from '../../src/integration/responses'
 import { Track, Identify, OrderCompleted } from '../../lib/facade/events/'
 import { Mapper } from './mapper'
@@ -47,4 +48,9 @@ amplitude.handle({
   sentAt: new Date().toISOString(),
   timestamp: Date.now().toString(),
   userId: '12312312'
-}).catch(console.error)
+}).then(res => '').catch(console.error)
+
+
+// const server = new Server(Amplitude)
+
+// server.listen()
