@@ -1,37 +1,21 @@
 import { Integration } from '../integration'
-import { IntegrationResponse } from '../integration/responses'
 import * as bodyParser from 'body-parser'
 import * as express from 'express'
-import * as Spec from '@segment/spec/events'
 
 const app = express()
 
 export class Server {
-  public integration: Integration
-
-  constructor(IntegrationConstructor: new() => Integration){
-    this.integration = new IntegrationConstructor()
+  constructor(public Integration: new(settings: object) => Integration){
     app.use(bodyParser.json())
-    app.post('/', this.handleExpressRequest.bind(this))
+    app.post('/', this.handle.bind(this))
   }
 
-  async handle(payload: object): Promise<IntegrationResponse> {
+  private async handle(req: express.Request, res: express.Response) {
+    const { event, settings} = req.body
+    const Integration = this.Integration
+    const integration = new Integration(settings)
     try {
-      const res = await this.integration.handle(payload as Spec.Identify | Spec.Track | Spec.Group | Spec.Page)
-      return res
-    } catch (err) {
-      if (!err.status) {
-        err.status = 500
-      }
-      throw err
-    }
-  }
-
-  private async handleExpressRequest(req: express.Request, res: express.Response) {
-    const payload = req.body as Spec.Identify | Spec.Track | Spec.Group | Spec.Page
-
-    try {
-      const r = await this.handle(payload)
+      const r = await integration.handle(event)
       const { status } = r
       res.send({ status })
     } catch (error) {
@@ -46,7 +30,7 @@ export class Server {
     }
   }
 
-  listen() {
-    app.listen(3000)
+  listen(port: number = 3000) {
+    app.listen(port)
   }
 }
