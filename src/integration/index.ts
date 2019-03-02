@@ -5,8 +5,7 @@ import { Facade } from '../../lib/facade/src'
 import * as Spec from '@segment/spec/events'
 
 type Filter<Base, Condition> = {
-  [Key in keyof Base]:
-    Base[Key] extends Condition ? Key : never
+  [Key in keyof Base]: Base[Key] extends Condition ? Key : never
 }
 
 type EventName<T extends Facade> = Filter<SpecEvents, T>[keyof SpecEvents]
@@ -41,12 +40,20 @@ export abstract class Integration {
     return new EventNotSupported('group')
   }
 
-  public async handle(event: Spec.Track | Spec.Identify | Spec.Page | Spec.Group): Promise<IntegrationResponse> {
+  public async handle(payload: object): Promise<IntegrationResponse> {
+    if (!this.isSegmentEvent(payload)) {
+      // TODO: Use pre-defined error here.
+      throw new Error()
+    }
+    // Introducing a new variable here is a TS requirement for Discriminiated Unions to work with TypeGuards.
+    // See: https://github.com/Microsoft/TypeScript/issues/13962
+    const event = payload
     if (event.type === 'track') {
       const subscription = this.subscriptions.get(event.event)
       if (subscription) {
         const facade = toFacade(event)
         if (!facade) {
+          // TODO: Use pre-defined error here.
           throw new Error()
         }
         return await subscription(facade, {})
@@ -65,8 +72,20 @@ export abstract class Integration {
     if (event.type === 'page') {
       return await this.page(new Page(event))
     }
-
     // This line should not be reachable but must be defined for TS exhaustiveness checks.
+    // TODO: Use pre-defined error.
     throw new Error(`Could not recognize event type ${event!.type}`)
+  }
+
+  // TODO: Add more exhaustive checks here.
+  private isSegmentEvent(
+    event: object
+  ): event is Spec.Track | Spec.Identify | Spec.Page | Spec.Group {
+    const eventTypes = ['track', 'identify', 'group', 'page']
+    if (event['type'] && eventTypes.includes(event['type'])) {
+      return true
+    } else {
+      return false
+    }
   }
 }
