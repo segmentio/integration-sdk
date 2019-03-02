@@ -5,7 +5,8 @@
   "main": "dist/",
   "scripts": {
     "build": "tsc",
-    "prepare": "tsc"
+    "prepare": "tsc",
+    "commit": "git-cz"
   },
   "keywords": [],
   "author": "",
@@ -26,6 +27,7 @@
     "ts-pathof": "^1.2.7"
   },
   "devDependencies": {
+    "commitizen": "^3.0.7",
     "ts-essentials": "^2.0.2",
     "typescript": "^3.3.3333"
   }
