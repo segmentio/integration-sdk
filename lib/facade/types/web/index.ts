@@ -7,44 +7,44 @@ export class Campaign extends Facade<Spec.Campaign> implements Spec.Campaign {
   }
 
   get content() {
-    return this.enforce.string(this.toJSON().content)
+    return this.enforce.string(this.getProperties().content)
   }
 
   get medium() {
-    return this.enforce.string(this.toJSON().medium)
+    return this.enforce.string(this.getProperties().medium)
   }
 
   get name() {
-    return this.enforce.string(this.toJSON().name)
+    return this.enforce.string(this.getProperties().name)
   }
 
   get source() {
-    return this.enforce.string(this.toJSON().source)
+    return this.enforce.string(this.getProperties().source)
   }
 
   get term() {
-    return this.enforce.string(this.toJSON().term)
+    return this.enforce.string(this.getProperties().term)
   }
 }
 
 export class Window extends Facade<Spec.Window> implements Spec.Window {
   get path() {
-    return this.toJSON().path
+    return this.getProperties().path
   }
 
   get referrer() {
-    return this.toJSON().referrer
+    return this.getProperties().referrer
   }
 
   get search() {
-    return this.toJSON().search
+    return this.getProperties().search
   }
 
   get title()  {
-    return this.toJSON().title
+    return this.getProperties().title
   }
 
   get url() {
-    return this.toJSON().url
+    return this.getProperties().url
   }
 }

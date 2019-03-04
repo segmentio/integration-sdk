@@ -13,24 +13,24 @@ export class Context extends Facade<Spec.Context> implements Spec.Context {
 
   constructor(properties: any) {
     super(properties)
-    this.app = new App(this.toJSON().app)
-    this.device = new Device(this.toJSON().device)
-    this.network = new Network(this.toJSON().network)
-    this.os = new OS(this.toJSON().os)
-    this.campaign = new Campaign(this.toJSON().campaign)
-    this.page = new Window(this.toJSON().page)
+    this.app = new App(this.getProperties().app)
+    this.device = new Device(this.getProperties().device)
+    this.network = new Network(this.getProperties().network)
+    this.os = new OS(this.getProperties().os)
+    this.campaign = new Campaign(this.getProperties().campaign)
+    this.page = new Window(this.getProperties().page)
   }
 
   get ip() {
-    return this.toJSON().ip
+    return this.getProperties().ip
   }
 
   get locale() {
-    return this.toJSON().locale
+    return this.getProperties().locale
   }
 
   get userAgent() {
-    return this.enforce.string(this.toJSON().userAgent || this.toJSON().user_agent as Spec.Context["userAgent"])
+    return this.enforce.string(this.getProperties().userAgent || this.getProperties().user_agent as Spec.Context["userAgent"])
   }
 }
 
@@ -40,31 +40,31 @@ export class Message extends Facade<Spec.Message> implements Spec.Message {
   constructor(event: Spec.Message) {
     super(event)
     this.type = event.type
-    this.context = new Context(this.toJSON().context)
+    this.context = new Context(this.getProperties().context)
   }
 
   get userId() {
-    const userId = this.toJSON().userId || this.toJSON().user_id as Spec.Message["userId"]
+    const userId = this.getProperties().userId || this.getProperties().user_id as Spec.Message["userId"]
     return this.enforce.stringOrNumber(userId)
   }
 
   get timestamp() {
-    return this.toJSON().timestamp
+    return this.getProperties().timestamp
   }
 
   get messageId() {
-    return this.toJSON().messageId
+    return this.getProperties().messageId
   }
 
   get receivedAt() {
-    return this.toJSON().receivedAt
+    return this.getProperties().receivedAt
   }
 
   get anonymousId() {
-    return this.toJSON().anonymousId
+    return this.getProperties().anonymousId
   }
 
   get sentAt() {
-    return this.toJSON().sentAt
+    return this.getProperties().sentAt
   }
 }

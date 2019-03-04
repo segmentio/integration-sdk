@@ -6,15 +6,15 @@ export class App extends Facade<Spec.Application> implements Spec.Application {
     super(properties)
   }
   get build() {
-    return this.toJSON().build
+    return this.getProperties().build
   }
 
   get name() {
-    return this.toJSON().name
+    return this.getProperties().name
   }
 
   get version() {
-    return this.toJSON().version
+    return this.getProperties().version
   }
 }
 
@@ -24,27 +24,27 @@ export class Device extends Facade<Spec.Device> implements Spec.Device {
   }
 
   get id() {
-    return this.toJSON().id
+    return this.getProperties().id
   }
 
   get manufacturer() {
-    return this.toJSON().manufacturer
+    return this.getProperties().manufacturer
   }
 
   get model() {
-    return this.toJSON().model
+    return this.getProperties().model
   }
 
   get name(){
-    return this.toJSON().name
+    return this.getProperties().name
   }
 
   get type() {
-    return this.toJSON().type
+    return this.getProperties().type
   }
 
   get version() {
-    return this.toJSON().version
+    return this.getProperties().version
   }
 }
 
@@ -54,19 +54,19 @@ export class Network extends Facade<Spec.Network> implements Spec.Network {
   }
 
   get bluetooth() {
-    return this.toJSON().bluetooth
+    return this.getProperties().bluetooth
   }
 
   get carrier() {
-    return this.enforce.string(this.toJSON().carrier)
+    return this.enforce.string(this.getProperties().carrier)
   }
 
   get cellular() {
-    return this.enforce.string(this.toJSON().cellular)
+    return this.enforce.string(this.getProperties().cellular)
   }
 
   get wifi() {
-    return this.toJSON().wifi
+    return this.getProperties().wifi
   }
 }
 
@@ -76,73 +76,73 @@ export class OS extends Facade<Spec.OS> implements Spec.OS {
   }
 
   get name() {
-    return this.enforce.string(this.toJSON().name)
+    return this.enforce.string(this.getProperties().name)
   }
 
   get version() {
-    return this.enforce.string(this.toJSON().version)
+    return this.enforce.string(this.getProperties().version)
   }
 }
 
 export class Campaign extends Facade<Spec.Campaign> implements Spec.Campaign {
   get source () {
-    return this.enforce.string(this.toJSON().source)
+    return this.enforce.string(this.getProperties().source)
   }
 
   get name () {
-    return this.enforce.string(this.toJSON().name)
+    return this.enforce.string(this.getProperties().name)
   }
 
   get content () {
-    return this.enforce.string(this.toJSON().content)
+    return this.enforce.string(this.getProperties().content)
   }
 
   get adCreative () {
-    return this.enforce.string(this.toJSON().adCreative)
+    return this.enforce.string(this.getProperties().adCreative)
   }
 
   get adGroup () {
-    return this.enforce.string(this.toJSON().adGroup)
+    return this.enforce.string(this.getProperties().adGroup)
   }
 }
 
 export class ApplicationUpdate extends Facade<Spec.ApplicationUpdate> implements Spec.ApplicationUpdate {
   get build() {
-    return this.enforce.stringOrNumber(this.toJSON().build)
+    return this.enforce.stringOrNumber(this.getProperties().build)
   }
 
   get previousBuild() {
-    return this.enforce.stringOrNumber(this.toJSON().previousBuild || this.toJSON().previous_build)
+    return this.enforce.stringOrNumber(this.getProperties().previousBuild || this.getProperties().previous_build)
   }
 
   get previousVersion() {
-    return this.enforce.string(this.toJSON().previousVersion || this.toJSON().previous_version)
+    return this.enforce.string(this.getProperties().previousVersion || this.getProperties().previous_version)
   }
 
   get version() {
-    return this.enforce.string(this.toJSON().version)
+    return this.enforce.string(this.getProperties().version)
   }
 }
 
 export class ApplicationOpen extends Facade<Spec.ApplicationOpen> implements Spec.ApplicationOpen {
   get build() {
-    return this.enforce.string(this.toJSON().build)
+    return this.enforce.string(this.getProperties().build)
   }
 
   get fromBackground() {
-    return this.toJSON().fromBackground || this.toJSON().from_background as Spec.ApplicationOpen["fromBackground"]
+    return this.getProperties().fromBackground || this.getProperties().from_background as Spec.ApplicationOpen["fromBackground"]
   }
 
   get referringApplication() {
-    return this.enforce.string(this.toJSON().referringApplication || this.toJSON().referring_application as Spec.ApplicationOpen["referringApplication"])
+    return this.enforce.string(this.getProperties().referringApplication || this.getProperties().referring_application as Spec.ApplicationOpen["referringApplication"])
   }
 
   get url() {
-    return this.enforce.string(this.toJSON().url)
+    return this.enforce.string(this.getProperties().url)
   }
 
   get version() {
-    return this.enforce.string(this.toJSON().version)
+    return this.enforce.string(this.getProperties().version)
   }
 }
 
@@ -150,11 +150,11 @@ export class InstallAttribution extends Facade<Spec.InstallAttribution> implemen
   public campaign: Campaign
   constructor(properties: Spec.InstallAttribution) {
     super(properties)
-    this.campaign = new Campaign(this.toJSON().campaign)
+    this.campaign = new Campaign(this.getProperties().campaign)
   }
 
   get provider () {
-    return this.enforce.string(this.toJSON().provider)
+    return this.enforce.string(this.getProperties().provider)
   }
 }
 
@@ -162,30 +162,30 @@ export class PushNotification extends Facade<Spec.PushNotification> implements S
   public campaign: Campaign
   constructor(properties: Spec.PushNotification) {
     super(properties)
-    this.campaign = new Campaign(this.toJSON().campaign)
+    this.campaign = new Campaign(this.getProperties().campaign)
   }
 
   get action () {
-    return this.enforce.string(this.toJSON().action)
+    return this.enforce.string(this.getProperties().action)
   }
 }
 
 export class DeepLink extends Facade<Spec.DeepLink> implements Spec.DeepLink {
   get provider () {
-    return this.enforce.string(this.toJSON().provider)
+    return this.enforce.string(this.getProperties().provider)
   }
 
   get url() {
-    return this.enforce.string(this.toJSON().url)
+    return this.enforce.string(this.getProperties().url)
   }
 }
 
 export class Install extends Facade<Spec.Install> implements Spec.Install {
   get build() {
-    return this.enforce.stringOrNumber(this.toJSON().build)
+    return this.enforce.stringOrNumber(this.getProperties().build)
   }
 
   get version() {
-    return this.enforce.string(this.toJSON().version)
+    return this.enforce.string(this.getProperties().version)
   }
 }

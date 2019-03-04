@@ -3,22 +3,22 @@ import { Facade } from '../../src'
 
 export class Company extends Facade<Spec.Company> {
   get name() {
-    return this.toJSON().name
+    return this.enforce.string(this.getProperties().name)
   }
 
   get industry() {
-    return this.toJSON().industry
+    return this.enforce.string(this.getProperties().industry)
   }
 
   get employees() {
-    return this.toJSON().employees
+    return this.enforce.stringOrNumber(this.getProperties().employees)
   }
 
   get plan() {
-    return this.toJSON().plan
+    return this.enforce.string(this.getProperties().plan)
   }
 
   get totalBilled() {
-    return this.enforce.number(this.toJSON().totalBilled || this.toJSON().total_billed || this.toJSON()['total billed']) as Spec.Company["totalBilled"]
+    return this.enforce.stringOrNumber(this.getProperties().totalBilled || this.getProperties().total_billed || this.getProperties()['total billed']) as Spec.Company["totalBilled"]
   }
 }
