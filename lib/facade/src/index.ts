@@ -22,6 +22,16 @@ class Enforcer {
 
 export class Facade<T = { [key: string]: any }> {
 	protected enforce = new Enforcer()
+
+	// getProperties should be used by internal Facade getters/setters to access member values.
+	// It returns a pointer to the raw properties dictionary and must be treated as immutable.
+	protected getProperties: () => Readonly<T & { [key: string]: any }>
+
+	// toJSON should be used by external consumers of the Facade instance.
+	// It returns a deep clone of the member values and can be safely mutated if necessary.
+	// It provides no garauntees about the shape and structure of the returned object.
+	public toJSON: () => { [key: string]: unknown }
+
 	constructor(properties: T & { [key: string]: any } = {} as T) {
 		let p = properties
 
@@ -32,6 +42,7 @@ export class Facade<T = { [key: string]: any }> {
 		// Freeze the raw properties object to ensure immutability.
 		Object.freeze(p)
 
+		// getProperties and toJSON are dynamically defined using the object passed in at run-time.
 		this.getProperties = () => {
 			return properties
 		}
@@ -39,18 +50,5 @@ export class Facade<T = { [key: string]: any }> {
 		this.toJSON = () => {
 			return _.cloneDeep(p) as { [key: string]: any }
 		}
-	}
-
-	// getProperties should be used by internal Facade getters/setters to access member values.
-	// It returns a pointer to the raw properties dictionary and must be treated as immutable.
-	protected getProperties(): Readonly<T & { [key: string]: any }> {
-		return {} as Readonly<T & { [key: string]: any }>
-	}
-
-	// toJSON should be used by external consumers of the Facade instance.
-	// It returns a deep clone of the member values and can be safely mutated if necessary.
-	// It provides no garauntees about the shape and structure of the returned object.
-	public toJSON(): { [key: string]: unknown } {
-		return {} as { [key: string]: unknown }
 	}
 }

@@ -48,7 +48,7 @@ amplitude.handle({
   sentAt: new Date().toISOString(),
   timestamp: Date.now().toString(),
   userId: '12312312'
-}).then(res => '').catch(console.error)
+}).then(console.log).catch(console.error)
 
 
 // const server = new Server(Amplitude)
