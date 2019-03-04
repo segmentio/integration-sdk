@@ -134,7 +134,11 @@ export class Mapper {
       ...this.hit(event, options)
     }
 
-    payload.ev = event.properties.toJSON()['value']
+    const value = event.properties.toJSON()['value']
+
+    if (typeof value === 'number') {
+      payload.ev = value
+    }
 
     if (this.enableEnhancedEcommerce && enhancedEcommerceProperties) {
       return Object.assign(

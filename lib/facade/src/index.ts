@@ -50,7 +50,7 @@ export class Facade<T = { [key: string]: any }> {
 	// toJSON should be used by external consumers of the Facade instance.
 	// It returns a deep clone of the member values and can be safely mutated if necessary.
 	// It provides no garauntees about the shape and structure of the returned object.
-	public toJSON(): { [key: string]: any } {
-		return {} as { [key: string]: any }
+	public toJSON(): { [key: string]: unknown } {
+		return {} as { [key: string]: unknown }
 	}
 }
