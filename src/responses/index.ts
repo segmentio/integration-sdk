@@ -29,8 +29,20 @@ export class ValidationError implements IntegrationResponse {
   constructor(public message: string) {}
 }
 
+export class InvalidAuthToken implements IntegrationResponse {
+  status = 401 as statusCode
+  name = 'InvalidAuthToken'
+  message = 'Authorization Token is Invalid or Malformed'
+}
+
+export class Unauthorized implements IntegrationResponse {
+  status = 403 as statusCode
+  name = 'Unauthorized'
+  message = 'Unauthorized'
+}
+
 export class EventNotSupported<T extends Message> implements IntegrationResponse {
-  status = 400 as statusCode
+  status = 501 as statusCode
   name = 'EventNotSupported'
   message: string
   constructor(event: T["type"]) {

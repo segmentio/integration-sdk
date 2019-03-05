@@ -2,6 +2,7 @@ import { Integration } from '../integration'
 import * as bodyParser from 'body-parser'
 import * as express from 'express'
 import * as auth from 'basic-auth'
+import { InvalidAuthToken } from '../responses';
 
 const app = express()
 
@@ -16,7 +17,8 @@ export class Server {
     const creds = auth(req)
 
     if (!creds) {
-      throw new Error('Missing Authorization Token')
+      const error = new InvalidAuthToken()
+      return res.send({ status: error.status, error })
     }
 
     const Integration = this.Integration
