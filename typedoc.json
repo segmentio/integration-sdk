@@ -3,7 +3,7 @@
   "json": "docs.json",
   "out": "ts-docs",
   "exclude": [
-    "**/example/amplitude/*.ts"
+    "**/examples/**"
   ],
   "ignoreCompilerErrors": true,
   "excludeNotExported": true,

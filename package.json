@@ -2,7 +2,7 @@
   "name": "integration-sdk",
   "version": "0.0.1",
   "description": "",
-  "main": "dist/src",
+  "main": "dist/",
   "scripts": {
     "build": "tsc",
     "prepare": "tsc",
