@@ -15,7 +15,7 @@ interface EventHandler<T = any> {
 }
 
 export abstract class Integration {
-  public abstract settings: object
+  public abstract authToken: string
   public subscriptions = new Map<string, EventHandler>()
 
   constructor() {}
@@ -43,7 +43,7 @@ export abstract class Integration {
   public async handle(payload: object): Promise<IntegrationResponse> {
     if (!this.isSegmentEvent(payload)) {
       // TODO: Use pre-defined error here.
-      throw new Error()
+      throw new Error('Invalid Segment Event Payload')
     }
     // Introducing a new variable here is a TS requirement for Discriminiated Unions to work with TypeGuards.
     // See: https://github.com/Microsoft/TypeScript/issues/13962
@@ -54,7 +54,7 @@ export abstract class Integration {
         const facade = toFacade(event)
         if (!facade) {
           // TODO: Use pre-defined error here.
-          throw new Error()
+          throw new Error('Unsupported Spec Event')
         }
         return await subscription(facade, {})
       }

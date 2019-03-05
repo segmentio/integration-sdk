@@ -8,6 +8,11 @@
   dependencies:
     typescript "^3.3.3333"
 
+"@types/auth-header@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@types/auth-header/-/auth-header-1.0.0.tgz#e43c798861bce40d556ca98793cb9d0a75acc948"
+  integrity sha512-babJ8rsbYfCvc3uRSDZXXePFHdq7MkYF2LmCwIetqAdoJM/1Hjfqmy2yu8JsBABu0y+2XcciHg3xzLbdyDFbXQ==
+
 "@types/aws-lambda@^8.10.19":
   version "8.10.19"
   resolved "https://registry.yarnpkg.com/@types/aws-lambda/-/aws-lambda-8.10.19.tgz#913a8016a4599d262960d97cb11faf7e963ec0e1"
@@ -19,6 +24,13 @@
   integrity sha1-7CMA++fX3d1+udOr+HmZlkyvzkY=
   dependencies:
     axios "*"
+
+"@types/basic-auth@^1.1.2":
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/@types/basic-auth/-/basic-auth-1.1.2.tgz#810fbded879f14327fc1d3413bdb92cfe9e24f73"
+  integrity sha512-NzkkcC+gkkILWaBi3+/z/3do6Ybk6TWeTqV5zCVXmG2KaBoT5YqlJvfqP44HCyDA+Cu58pp7uKAxy/G58se/TA==
+  dependencies:
+    "@types/node" "*"
 
 "@types/body-parser@*":
   version "1.17.0"
@@ -173,6 +185,13 @@ base@^0.11.1:
     isobject "^3.0.1"
     mixin-deep "^1.2.0"
     pascalcase "^0.1.1"
+
+basic-auth@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/basic-auth/-/basic-auth-2.0.1.tgz#b998279bf47ce38344b4f3cf916d4679bbf51e3a"
+  integrity sha512-NF+epuEdnUYVlGuhaxbbq+dvJttwLnGY+YixlXlME5KpQ5W3CnXA5cVTneY3SPbPDRkcjMbifrwmFYcClgOZeg==
+  dependencies:
+    safe-buffer "5.1.2"
 
 body-parser@1.18.3, body-parser@^1.18.3:
   version "1.18.3"
