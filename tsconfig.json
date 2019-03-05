@@ -10,5 +10,5 @@
     "suppressImplicitAnyIndexErrors": true,
     "experimentalDecorators": true
   },
-  "include": ["src/integration", "src/facade/events", "src/server", "src/responses"]
+  "include": ["src"]
 }
