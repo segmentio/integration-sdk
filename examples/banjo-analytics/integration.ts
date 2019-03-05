@@ -1,5 +1,6 @@
-import { Integration, ValidationError, Success } from '../../src';
-import { Track, OrderCompleted } from '../../lib/facade/events';
+import { Integration } from '../../src/integration';
+import { Track, OrderCompleted } from '../../src/facade/events';
+import { Success, ValidationError } from '../../src/responses'
 
 export class BanjoAnalytics extends Integration {
   constructor(public authToken: string) {

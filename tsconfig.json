@@ -3,11 +3,12 @@
     "module": "commonjs",
     "moduleResolution": "node",
     "target": "ES2017",
-    "outDir": "./dist",
+    "outDir": "./lib",
     "declaration": true,
     "sourceMap": true,
     "strict": true,
     "suppressImplicitAnyIndexErrors": true,
     "experimentalDecorators": true
-  }
+  },
+  "include": ["src/integration", "src/facade/events", "src/server", "src/responses"]
 }

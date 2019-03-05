@@ -1,7 +1,7 @@
-import { Track, Identify, Group, Page } from '../../lib/facade/events'
-import { IntegrationResponse, EventNotSupported } from './responses'
+import { Track, Identify, Group, Page } from '../facade/events'
+import { IntegrationResponse, EventNotSupported } from '../responses'
 import { toFacade, SpecEvents } from './to-facade'
-import { Facade } from '../../lib/facade/src'
+import { Facade } from '../facade/src'
 import * as Spec from '@segment/spec/events'
 
 type Filter<Base, Condition> = {

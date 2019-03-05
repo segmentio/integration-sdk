@@ -1,7 +1,7 @@
-import * as Ecommerce from '../../lib/facade/events/ecommerce'
-import * as Mobile from '../../lib/facade/events/mobile'
+import * as Ecommerce from '../facade/events/ecommerce'
+import * as Mobile from '../facade/events/mobile'
 import { Track as SpecTrack } from '@segment/spec/events'
-import { Track } from '../../lib/facade/events';
+import { Track } from '../facade/events';
 
 export interface SpecEvents {
   // eCommerce
