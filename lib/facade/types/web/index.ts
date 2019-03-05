@@ -1,5 +1,5 @@
 import { Facade } from '../../src'
-import * as Spec from '../../../../../spec/types/web'
+import * as Spec from '@segment/spec/types/web'
 
 export class Campaign extends Facade<Spec.Campaign> implements Spec.Campaign {
   constructor(properties: Spec.Campaign) {

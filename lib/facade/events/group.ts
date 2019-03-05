@@ -1,6 +1,6 @@
 import { Message } from './message'
 import { Company } from '../types/common'
-import { Group as Spec } from '../../../../spec/events/group'
+import { Group as Spec } from '@segment/spec/events'
 
 export class Group extends Message implements Spec {
   public type: Spec["type"]

@@ -1,5 +1,5 @@
 import { Facade } from '../../src'
-import * as Spec from '../../../../../spec/types/ecommerce'
+import * as Spec from '@segment/spec/types/ecommerce'
 
 export class Product extends Facade<Spec.Product> implements Spec.Product {
   get brand() {
@@ -27,7 +27,7 @@ export class Product extends Facade<Spec.Product> implements Spec.Product {
   }
 
   get price() {
-    return this.enforce.number(this.getProperties().price)
+    return this.enforce.stringOrNumber(this.getProperties().price)
   }
 
   get productId() {

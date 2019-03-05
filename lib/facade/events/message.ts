@@ -1,5 +1,5 @@
 import { Facade } from '../src'
-import * as Spec from '../../../../spec/events/message'
+import * as Spec from '@segment/spec/events'
 import { App, Device, Network, OS } from '../types/mobile'
 import { Campaign, Window } from '../types/web'
 

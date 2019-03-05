@@ -1,4 +1,4 @@
-import * as Spec from '../../../../../spec/types/common'
+import * as Spec from '@segment/spec/types/common'
 import { Facade } from '../../src'
 
 export class Company extends Facade<Spec.Company> {

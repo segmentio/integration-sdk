@@ -1,4 +1,4 @@
-import { Page as Spec } from '../../../../spec/events/page'
+import { Page as Spec } from '@segment/spec/events'
 import { Message } from './message'
 import { Window } from '../types/web'
 

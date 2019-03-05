@@ -1,6 +1,6 @@
 import { Message } from './message'
 import { Facade } from '../src'
-import { Identify as Spec } from '../../../../spec/events/identify'
+import { Identify as Spec } from '@segment/spec/events'
 
 export class Identify extends Message implements Spec {
   public type: Spec["type"]
