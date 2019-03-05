@@ -1,13 +1,12 @@
 {
-  "name": "integration-sdk",
+  "name": "@segment/integration-sdk",
   "version": "0.0.1",
-  "description": "",
-  "main": "lib/",
-  "types": "lib/",
+  "description": ":mountain_cableway:Framework for building safe and reliable Segment integrations",
+  "main": "./lib",
+  "types": "./lib",
   "scripts": {
     "build": "tsc",
-    "prepare": "tsc",
-    "commit": "git-cz"
+    "prepare": "tsc"
   },
   "keywords": [],
   "author": "",
@@ -15,23 +14,21 @@
   "dependencies": {
     "@segment/spec": "https://github.com/segmentio/spec#v2",
     "@types/auth-header": "^1.0.0",
-    "@types/aws-lambda": "^8.10.19",
-    "@types/axios": "^0.14.0",
     "@types/basic-auth": "^1.1.2",
     "@types/express": "^4.16.1",
     "@types/lodash": "^4.14.121",
     "@types/node": "^10.12.18",
-    "axios": "^0.18.0",
     "basic-auth": "^2.0.1",
     "body-parser": "^1.18.3",
     "express": "^4.16.4",
     "lodash": "^4.17.11",
-    "restyped-axios": "^2.0.0",
     "ts-pathof": "^1.2.7"
   },
   "devDependencies": {
-    "commitizen": "^3.0.7",
     "ts-essentials": "^2.0.2",
     "typescript": "^3.3.3333"
-  }
+  },
+  "files": [
+    "lib/**/*"
+  ]
 }

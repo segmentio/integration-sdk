@@ -5,10 +5,4 @@ The Segment Integration SDK is a framework designed to help developers build rel
 Documentation and a quick start guide can be found [here](https://segment.gitbook.io/project/-LZ62ZxaRM7vxXe_MLAt/).
 
 # Examples
-You can find an example of an abridged integration with the [Amplitude API](https://amplitude.zendesk.com/hc/en-us/articles/204771828-HTTP-API) in the `/examples` directory. To run the server and start sending events to the integration, run:
-
-```
-$ npm build
-$ node dist/examples/amplitude/index.js
-$ curl http://localhost:3000 -H "Content-Type: application/json" -d '{"type": "track", "name": "Order Completed", "properties": { "productId": "foo" } }'
-```
+You can find a simple example of an integration in the `/examples` directory.
