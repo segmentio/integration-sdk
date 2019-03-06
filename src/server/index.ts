@@ -21,10 +21,9 @@ export class Server {
       return res.send({ status: error.status, error })
     }
 
-    const Integration = this.Integration
-    const integration = new Integration(creds.name)
-
     try {
+      const Integration = this.Integration
+      const integration = new Integration(creds.name)
       const r = await integration.handle(event)
       const { status } = r
       res.send({ status })

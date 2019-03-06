@@ -1,5 +1,5 @@
 import { Track, Identify, Group, Page } from '../facade/events'
-import { IntegrationResponse, EventNotSupported } from '../responses'
+import { IntegrationResponse, EventNotSupported, InvalidEventPayload } from '../responses'
 import { toFacade, SpecEvents } from './to-facade'
 import { Facade } from '../facade/src'
 import * as Spec from '@segment/spec/events'
@@ -42,8 +42,7 @@ export abstract class Integration {
 
   public async handle(payload: object): Promise<IntegrationResponse> {
     if (!this.isSegmentEvent(payload)) {
-      // TODO: Use pre-defined error here.
-      throw new Error('Invalid Segment Event Payload')
+      return new InvalidEventPayload()
     }
     // Introducing a new variable here is a TS requirement for Discriminiated Unions to work with TypeGuards.
     // See: https://github.com/Microsoft/TypeScript/issues/13962
@@ -53,7 +52,7 @@ export abstract class Integration {
       if (subscription) {
         const facade = toFacade(event)
         if (!facade) {
-          // TODO: Use pre-defined error here.
+          // TODO: How should this edge case be handled?
           throw new Error('Unsupported Spec Event')
         }
         return await subscription(facade, {})

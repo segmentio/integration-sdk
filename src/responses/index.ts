@@ -55,3 +55,9 @@ export class Success implements IntegrationResponse {
   name = 'Success'
   message = 'Success'
 }
+
+export class InvalidEventPayload implements IntegrationResponse {
+  status = 400 as statusCode
+  name = 'InvalidEventPayload'
+  message = 'Event Payload is Invalid'
+}
