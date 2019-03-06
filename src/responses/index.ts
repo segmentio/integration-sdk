@@ -1,6 +1,6 @@
 import { Message } from '../facade/events/';
 
-type statusCode = 200 | 400 | 500
+type statusCode = 200 | 400 | 401 | 403 | 500 | 501
 
 export interface IntegrationResponse {
   status: statusCode
@@ -24,25 +24,25 @@ export class MissingRequiredProperty<T extends { [x: string]: any }, K1 extends 
 }
 
 export class ValidationError implements IntegrationResponse {
-  status = 400 as statusCode
+  status: statusCode = 400
   name = 'ValidationError'
   constructor(public message: string) {}
 }
 
 export class InvalidAuthToken implements IntegrationResponse {
-  status = 401 as statusCode
+  status: statusCode = 401
   name = 'InvalidAuthToken'
   message = 'Authorization Token is Invalid or Malformed'
 }
 
 export class Unauthorized implements IntegrationResponse {
-  status = 403 as statusCode
+  status: statusCode = 403
   name = 'Unauthorized'
   message = 'Unauthorized'
 }
 
 export class EventNotSupported<T extends Message> implements IntegrationResponse {
-  status = 501 as statusCode
+  status: statusCode = 501
   name = 'EventNotSupported'
   message: string
   constructor(event: T["type"]) {
@@ -51,13 +51,19 @@ export class EventNotSupported<T extends Message> implements IntegrationResponse
 }
 
 export class Success implements IntegrationResponse {
-  status = 200 as statusCode
+  status: statusCode = 200
   name = 'Success'
-  message = 'Success'
+  message = 'Success!'
 }
 
 export class InvalidEventPayload implements IntegrationResponse {
-  status = 400 as statusCode
+  status: statusCode = 400
   name = 'InvalidEventPayload'
   message = 'Event Payload is Invalid'
+}
+
+export class InternalServerError implements IntegrationResponse {
+  status: statusCode = 500
+  name = 'InternalServerError'
+  message = 'Internal Server Error'
 }

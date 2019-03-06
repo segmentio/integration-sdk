@@ -10,7 +10,8 @@ export class BanjoAnalytics extends Integration {
 
   async track(event: Track) {
     if (!event.userId) {
-      throw new ValidationError('UserId is a required property of all track events')
+      throw new Error()
+      // throw new ValidationError('UserId is a required property of all track events')
     }
     console.log(event.event)
     return new Success()

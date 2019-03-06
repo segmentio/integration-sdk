@@ -2,7 +2,7 @@ import { Integration } from '../integration'
 import * as bodyParser from 'body-parser'
 import * as express from 'express'
 import * as auth from 'basic-auth'
-import { InvalidAuthToken } from '../responses';
+import { InvalidAuthToken, IntegrationResponse, InternalServerError } from '../responses';
 
 const app = express()
 
@@ -18,27 +18,28 @@ export class Server {
 
     if (!creds) {
       const error = new InvalidAuthToken()
-      return res.send({ status: error.status, error })
+      return res.status(error.status).send(error)
     }
 
     try {
       const Integration = this.Integration
       const integration = new Integration(creds.name)
       const r = await integration.handle(event)
-      const { status } = r
-      res.send({ status })
+      const { status, message } = r
+      res.status(status).send(message)
     } catch (error) {
-      let status: number
-      if (error.status && typeof error.status === 'number') {
-        status = error.status
-      } else {
-        status = 500
+      if (!this.isIntegrationResponse(error)) {
+        error = new InternalServerError()
       }
-      res.send({ status, error })
+      res.status(error.status).send(error)
     }
   }
 
   listen(port: number = 3000) {
     app.listen(port)
+  }
+
+  private isIntegrationResponse(error: any): error is IntegrationResponse {
+    return (typeof error.status === 'number' && error.message && error.name)
   }
 }
