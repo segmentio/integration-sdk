@@ -15,7 +15,7 @@ interface EventHandler<T = any> {
 }
 
 export abstract class Integration {
-  public abstract authToken: string
+  public abstract settings: object
   public subscriptions = new Map<string, EventHandler>()
 
   constructor() {}

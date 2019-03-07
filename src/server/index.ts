@@ -1,13 +1,14 @@
 import { Integration } from '../integration'
 import * as bodyParser from 'body-parser'
 import * as express from 'express'
-import * as auth from 'basic-auth'
-import { InvalidAuthToken, IntegrationResponse, InternalServerError } from '../responses';
+import { IntegrationResponse, InternalServerError } from '../responses';
+import { IncomingHttpHeaders } from 'http';
+import _ from '../utils'
 
 const app = express()
 
 export class Server {
-  constructor(public Integration: new(authToken: string) => Integration){
+  constructor(public Integration: new(settings: object) => Integration){
     app.use(bodyParser.json())
     app.post('/', this.handle.bind(this))
   }
@@ -22,8 +23,9 @@ export class Server {
     }
 
     try {
+      const settings = this.parseSettings(req.headers)
       const Integration = this.Integration
-      const integration = new Integration(creds.name)
+      const integration = new Integration(settings)
       const r = await integration.handle(event)
       const { status, message } = r
       res.status(status).send(message)
@@ -37,6 +39,17 @@ export class Server {
 
   listen(port: number = 3000) {
     app.listen(port)
+  }
+
+  private parseSettings(headers: IncomingHttpHeaders): object {
+    const settings = headers['X-Settings']
+    if (settings && _.isObject(settings)) {
+      return settings
+    }
+
+    return _.mapKeys(headers, (value, key) => {
+      return _.camelCase(key)
+    })
   }
 
   private isIntegrationResponse(error: any): error is IntegrationResponse {
