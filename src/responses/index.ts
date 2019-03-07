@@ -1,69 +1,74 @@
 import { Message } from '../facade/events/';
+import * as HttpStatus from 'http-status-codes'
 
-type statusCode = 200 | 400 | 401 | 403 | 500 | 501
-
-export interface IntegrationResponse {
-  status: statusCode
+interface HttpResponse {
+  status: HttpStatus.HTTP_STATUS
   name: string
-  message: string
+  message?: string
 }
 
-export class MissingRequiredProperty<T extends { [x: string]: any }, K1 extends keyof T, K2 extends keyof T[K1], K3 extends keyof T[K1][K2], K4 extends keyof T[K1][K2][K3], K5 extends keyof T[K1][K2][K3][K4], K6 extends keyof T[K1][K2][K3][K4][K5]> implements IntegrationResponse {
-  status = 400 as statusCode
-  name = 'MissingRequiredProperty'
-  message ='string'
-  constructor(root: T, key1: K1)
-  constructor(root: T, key1: K1, key2?: K2)
-  constructor(root: T, key1: K1, key2?: K2, key3?: K3)
-  constructor(root: T, key1: K1, key2?: K2, key3?: K3, key4?: K4)
-  constructor(root: T, key1: K1, key2?: K2, key3?: K3, key4?: K4, key5?: K5)
-  constructor(root: T, key1: K1, key2?: K2, key3?: K3, key4?: K4, key5?: K5, key6?: K6) {
-    const path = Array.from(arguments).slice(1).join('.')
-    this.message = `Missing required property: ${path}.`
+export class IntegrationResponse implements HttpResponse {
+  public name: string
+  constructor(public readonly status: HttpStatus.HTTP_STATUS, public message?: string) {
+    this.name = HttpStatus.getStatusText(status)
   }
 }
 
-export class ValidationError implements IntegrationResponse {
-  status: statusCode = 400
+export class ValidationError extends IntegrationResponse implements IntegrationResponse {
   name = 'ValidationError'
-  constructor(public message: string) {}
+  constructor(public message: string) {
+    super(400, message)
+  }
 }
 
-export class InvalidAuthToken implements IntegrationResponse {
-  status: statusCode = 401
-  name = 'InvalidAuthToken'
-  message = 'Authorization Token is Invalid or Malformed'
+export class Accepted extends IntegrationResponse {
+  constructor(message?: string) {
+    super(HttpStatus.ACCEPTED, message)
+  }
 }
 
-export class Unauthorized implements IntegrationResponse {
-  status: statusCode = 403
-  name = 'Unauthorized'
-  message = 'Unauthorized'
+export class BadRequest extends IntegrationResponse {
+  constructor(message?: string) {
+    super(HttpStatus.BAD_REQUEST, message)
+  }
 }
 
-export class EventNotSupported<T extends Message> implements IntegrationResponse {
-  status: statusCode = 501
-  name = 'EventNotSupported'
+export class Forbidden extends IntegrationResponse {
+  constructor(message?: string) {
+    super(HttpStatus.BAD_REQUEST, message)
+  }
+}
+
+export class InternalServerError extends IntegrationResponse {
+  constructor(message?: string) {
+    super(HttpStatus.INTERNAL_SERVER_ERROR, message)
+  }
+}
+
+export class PaymentRequired extends IntegrationResponse {
+  constructor(message?: string) {
+    super(HttpStatus.PAYMENT_REQUIRED, message)
+  }
+}
+
+export class Success extends IntegrationResponse {
+  constructor() {
+    super(HttpStatus.OK)
+  }
+}
+
+export class EventNotSupported<T extends Message> extends IntegrationResponse {
   message: string
   constructor(event: T["type"]) {
+    super(HttpStatus.METHOD_NOT_ALLOWED)
+    this.name = 'Event Not Supported'
     this.message = `Event ${event} not supported.`
   }
 }
 
-export class Success implements IntegrationResponse {
-  status: statusCode = 200
-  name = 'Success'
-  message = 'Success!'
-}
-
-export class InvalidEventPayload implements IntegrationResponse {
-  status: statusCode = 400
-  name = 'InvalidEventPayload'
-  message = 'Event Payload is Invalid'
-}
-
-export class InternalServerError implements IntegrationResponse {
-  status: statusCode = 500
-  name = 'InternalServerError'
-  message = 'Internal Server Error'
+export class InvalidEventPayload extends IntegrationResponse {
+  constructor() {
+    super(HttpStatus.BAD_REQUEST, 'Event Payload is Invalid')
+    this.name = 'Invalid Event Payload'
+  }
 }

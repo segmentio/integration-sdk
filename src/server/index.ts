@@ -15,13 +15,6 @@ export class Server {
 
   private async handle(req: express.Request, res: express.Response) {
     const event = req.body
-    const creds = auth(req)
-
-    if (!creds) {
-      const error = new InvalidAuthToken()
-      return res.status(error.status).send(error)
-    }
-
     try {
       const settings = this.parseSettings(req.headers)
       const Integration = this.Integration
