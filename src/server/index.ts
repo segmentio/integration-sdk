@@ -57,8 +57,4 @@ export class Server {
 
     return new InternalServerError()
   }
-
-  private isIntegrationResponse(error: any): error is IntegrationResponse {
-    return (typeof error.status === 'number' && error.message && error.name)
-  }
 }
