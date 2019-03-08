@@ -2,11 +2,9 @@
 # yarn lockfile v1
 
 
-"@segment/spec@https://github.com/segmentio/spec#v2":
+"@segment/spec@https://github.com/segmentio/spec-ts":
   version "1.0.0"
-  resolved "https://github.com/segmentio/spec#dff924111cfbce5b1cc9d1355abde332fb635d7a"
-  dependencies:
-    typescript "^3.3.3333"
+  resolved "https://github.com/segmentio/spec-ts#0ec14c7f78454383230877f5ebfffba5cd33e611"
 
 "@types/body-parser@*":
   version "1.17.0"
