@@ -8,18 +8,6 @@
   dependencies:
     typescript "^3.3.3333"
 
-"@types/auth-header@^1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@types/auth-header/-/auth-header-1.0.0.tgz#e43c798861bce40d556ca98793cb9d0a75acc948"
-  integrity sha512-babJ8rsbYfCvc3uRSDZXXePFHdq7MkYF2LmCwIetqAdoJM/1Hjfqmy2yu8JsBABu0y+2XcciHg3xzLbdyDFbXQ==
-
-"@types/basic-auth@^1.1.2":
-  version "1.1.2"
-  resolved "https://registry.yarnpkg.com/@types/basic-auth/-/basic-auth-1.1.2.tgz#810fbded879f14327fc1d3413bdb92cfe9e24f73"
-  integrity sha512-NzkkcC+gkkILWaBi3+/z/3do6Ybk6TWeTqV5zCVXmG2KaBoT5YqlJvfqP44HCyDA+Cu58pp7uKAxy/G58se/TA==
-  dependencies:
-    "@types/node" "*"
-
 "@types/body-parser@*":
   version "1.17.0"
   resolved "https://registry.yarnpkg.com/@types/body-parser/-/body-parser-1.17.0.tgz#9f5c9d9bd04bb54be32d5eb9fc0d8c974e6cf58c"
