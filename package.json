@@ -6,6 +6,7 @@
   "types": "./lib",
   "scripts": {
     "build": "tsc",
+    "build-examples": "tsc --project ./tsconfig-examples.json",
     "prepare": "tsc"
   },
   "keywords": [],
@@ -19,12 +20,14 @@
     "@types/http-status-codes": "^1.2.0",
     "@types/lodash": "^4.14.121",
     "@types/node": "^10.12.18",
+    "@types/useragent": "^2.1.1",
     "basic-auth": "^2.0.1",
     "body-parser": "^1.18.3",
     "express": "^4.16.4",
     "http-status-codes": "^1.3.1",
     "lodash": "^4.17.11",
-    "ts-pathof": "^1.2.7"
+    "ts-pathof": "^1.2.7",
+    "useragent": "^2.3.0"
   },
   "devDependencies": {
     "axios": "^0.18.0",
