@@ -6,7 +6,7 @@
   "types": "./lib",
   "scripts": {
     "build": "tsc",
-    "build-examples": "tsc --project ./tsconfig-examples.json",
+    "build-examples": "tsc --project ./examples",
     "prepare": "tsc"
   },
   "keywords": [],
