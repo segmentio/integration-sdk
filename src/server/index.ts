@@ -19,14 +19,13 @@ export class Server {
       const settings = this.parseSettings(req.headers)
       const Integration = this.Integration
       const integration = new Integration(settings)
-      const r = await integration.handle(event)
-      const { status, message } = r
-      res.status(status).send(message)
+      const response = await integration.handle(event)
+      res.status(response.status).json(response)
     } catch (error) {
       if (!(error instanceof IntegrationResponse)) {
         error = this.parseError(error)
       }
-      res.status(error.status).send(error)
+      res.status(error.status).json(error)
     }
   }
 
