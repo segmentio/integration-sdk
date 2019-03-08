@@ -15,9 +15,9 @@ export class IntegrationResponse implements HttpResponse {
 }
 
 export class ValidationError extends IntegrationResponse implements IntegrationResponse {
-  name = 'ValidationError'
   constructor(public message: string) {
     super(400, message)
+    this.name = 'Validation Error'
   }
 }
 
@@ -58,7 +58,6 @@ export class Success extends IntegrationResponse {
 }
 
 export class EventNotSupported<T extends Message> extends IntegrationResponse {
-  message: string
   constructor(event: T["type"]) {
     super(HttpStatus.METHOD_NOT_ALLOWED)
     this.name = 'Event Not Supported'
