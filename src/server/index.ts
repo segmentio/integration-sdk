@@ -8,7 +8,7 @@ import _ from '../utils'
 const app = express()
 
 export class Server {
-  constructor(public Integration: new(settings: object) => Integration){
+  constructor(public Integration: new(settings: any) => Integration){
     app.use(bodyParser.json())
     app.post('/', this.handle.bind(this))
   }
@@ -23,8 +23,8 @@ export class Server {
       const { status, message } = r
       res.status(status).send(message)
     } catch (error) {
-      if (!this.isIntegrationResponse(error)) {
-        error = new InternalServerError()
+      if (!(error instanceof IntegrationResponse)) {
+        error = this.parseError(error)
       }
       res.status(error.status).send(error)
     }
@@ -43,6 +43,19 @@ export class Server {
     return _.mapKeys(headers, (value, key) => {
       return _.camelCase(key)
     })
+  }
+
+  private parseError(err: any): IntegrationResponse {
+    if (err.status) {
+      return new IntegrationResponse(err.status)
+    }
+
+    // Axios Response
+    if (err.response) {
+      return new IntegrationResponse(err.response.status, err.response.statusText)
+    }
+
+    return new InternalServerError()
   }
 
   private isIntegrationResponse(error: any): error is IntegrationResponse {
