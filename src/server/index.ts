@@ -30,8 +30,9 @@ export class Server {
     }
   }
 
-  listen(port: number = 3000) {
-    app.listen(port)
+  listen(port: number | string = 3000) {
+    app.listen(Number(port))
+    console.log(`Listening on port: ${port}`)
   }
 
   private parseSettings(headers: IncomingHttpHeaders): object {
