@@ -11,7 +11,7 @@ yarn add @segment/integration-sdk
 
 With `npm`:
 ```
-npm i @segment/integration-sdk
+npm i --save @segment/integration-sdk
 ```
 
 ## Usage
