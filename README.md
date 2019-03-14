@@ -18,7 +18,7 @@ npm i --save @segment/integration-sdk
 ```typescript
 // index.ts
 import { Integration } from '@segment/integration-sdk/lib/integration'
-import { Track, Identify } from '@segment/integration-sdk/lib/facade/events'
+import { Track, Identify, OrderCompleted } from '@segment/integration-sdk/lib/facade/events'
 import { Success } from '@segment/integration-sdk/lib/responses'
 
 interface Settings {}
@@ -26,6 +26,7 @@ interface Settings {}
 export class MyIntegration extends Integration {
   constructor(public settings: Settings) {
     super()
+    this.subscribe<OrderCompleted>('Order Completed', this.orderCompleted)
   }
 
   async track(event: Track) {
@@ -35,6 +36,11 @@ export class MyIntegration extends Integration {
 
   async identify(event: Identify) {
     console.log('Identify event handled...')
+    return new Success()
+  }
+
+  async orderCompleted(event: OrderCompleted) {
+    console.log(event.properties.revenue)
     return new Success()
   }
 }
