@@ -15,7 +15,7 @@ npm i @segment/integration-sdk
 ```
 
 ## Usage
-```
+```typescript
 // index.ts
 import { Integration } from '@segment/integration-sdk/lib/integration'
 import { Track, Identify } from '@segment/integration-sdk/lib/facade/events'
