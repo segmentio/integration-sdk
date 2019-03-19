@@ -6,13 +6,21 @@ import { Track } from '../facade/events';
 export interface SpecEvents {
   // eCommerce
   'Order Completed': Ecommerce.OrderCompleted
+  'Order Updated': Ecommerce.OrderUpdated
+  'Order Refunded': Ecommerce.OrderRefunded
+  'Order Cancelled': Ecommerce.OrderCancelled
   'Product List Viewed': Ecommerce.ProductListViewed
   'Product Clicked': Ecommerce.ProductClicked
   'Product Added': Ecommerce.ProductAdded
   'Product List Filtered': Ecommerce.ProductListFiltered
   'Product Removed': Ecommerce.ProductRemoved
-  'PromotionClicked': Ecommerce.PromotionClicked
+  'Product Viewed': Ecommerce.ProductViewed
+  'Promotion Clicked': Ecommerce.PromotionClicked
   'Promotion Viewed': Ecommerce.PromotionViewed
+  'Cart Viewed': Ecommerce.CartViewed
+  'Checkout Started': Ecommerce.CheckoutStarted
+  'Checkout Step Completed': Ecommerce.CheckoutStepCompleted
+  'Payment Info Entered': Ecommerce.PaymentInfoEntered
 
   // Mobile
   'Application Installed': Mobile.ApplicationInstalled
@@ -31,13 +39,21 @@ export interface SpecEvents {
 const specEvents = {
   // eCommerce
   'Order Completed': Ecommerce.OrderCompleted,
+  'Order Updated': Ecommerce.OrderUpdated,
+  'Order Refunded': Ecommerce.OrderRefunded,
+  'Order Cancelled': Ecommerce.OrderCancelled,
   'Product List Viewed': Ecommerce.ProductListViewed,
   'Product Clicked': Ecommerce.ProductClicked,
   'Product Added': Ecommerce.ProductAdded,
   'Product List Filtered': Ecommerce.ProductListFiltered,
   'Product Removed': Ecommerce.ProductRemoved,
+  'Product Viewed': Ecommerce.ProductViewed,
   'Promotion Clicked': Ecommerce.PromotionClicked,
   'Promotion Viewed': Ecommerce.PromotionViewed,
+  'Cart Viewed': Ecommerce.CartViewed,
+  'Checkout Started': Ecommerce.CheckoutStarted,
+  'Checkout Step Completed': Ecommerce.CheckoutStepCompleted,
+  'Payment Info Entered': Ecommerce.PaymentInfoEntered,
 
   // Mobile
   'Application Installed': Mobile.ApplicationInstalled,
