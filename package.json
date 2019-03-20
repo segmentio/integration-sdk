@@ -1,6 +1,6 @@
 {
   "name": "@segment/integration-sdk",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": ":mountain_cableway:Framework for building safe and reliable Segment integrations",
   "main": "./lib",
   "types": "./lib",
