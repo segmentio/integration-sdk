@@ -2,12 +2,13 @@ import { Integration } from '../integration'
 import * as bodyParser from 'body-parser'
 import * as express from 'express'
 import { IntegrationResponse, InternalServerError } from '../responses';
-import { IncomingHttpHeaders } from 'http';
+import * as http from 'http';
 import _ from '../utils'
-
 const app = express()
 
 export class Server {
+  private server?: http.Server
+
   constructor(public Integration: new(settings: any) => Integration){
     app.use(bodyParser.json())
     app.post('/', this.handle.bind(this))
@@ -22,19 +23,37 @@ export class Server {
       const response = await integration.handle(event)
       res.status(response.status).json(response)
     } catch (error) {
-      if (!(error instanceof IntegrationResponse)) {
-        error = this.parseError(error)
+      let response: IntegrationResponse
+      if (error instanceof IntegrationResponse) {
+        response = error
+      } else {
+        response = this.parseError(error)
       }
-      res.status(error.status).json(error)
+      res.status(response.status).json(response)
+      // Internal Server Errors means the app is in an unhealthy state and shoule be terminated.
+      if (response instanceof InternalServerError) {
+        await this.close()
+        console.error(error)
+        process.exit(1)
+      }
     }
   }
 
   listen(port: number | string = 3000) {
-    app.listen(Number(port))
+    this.server = app.listen(Number(port))
     console.log(`Listening on port: ${port}`)
   }
 
-  private parseSettings(headers: IncomingHttpHeaders): object {
+  async close() {
+    return new Promise((resolve, reject) => {
+      if (this.server) {
+        return this.server.close(resolve)
+      }
+      resolve()
+    })
+  }
+
+  private parseSettings(headers: http.IncomingHttpHeaders): object {
     const settings = headers['X-Settings']
     if (settings && _.isObject(settings)) {
       return settings
