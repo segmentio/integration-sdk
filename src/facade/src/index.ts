@@ -18,6 +18,12 @@ class Enforcer {
 			return property
 		}
 	}
+
+	boolean<T>(property: T): T | undefined {
+		if (typeof property === 'boolean') {
+			return property
+		}
+	}
 }
 
 export class Facade<T = { [key: string]: any }> {

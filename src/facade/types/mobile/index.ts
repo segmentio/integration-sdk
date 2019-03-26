@@ -6,15 +6,15 @@ export class App extends Facade<Spec.Application> implements Spec.Application {
     super(properties)
   }
   get build() {
-    return this.getProperties().build
+    return this.enforce.string(this.getProperties().build)
   }
 
   get name() {
-    return this.getProperties().name
+    return this.enforce.string(this.getProperties().name)
   }
 
   get version() {
-    return this.getProperties().version
+    return this.enforce.string(this.getProperties().version)
   }
 }
 
@@ -24,27 +24,27 @@ export class Device extends Facade<Spec.Device> implements Spec.Device {
   }
 
   get id() {
-    return this.getProperties().id
+    return this.enforce.string(this.getProperties().id)
   }
 
   get manufacturer() {
-    return this.getProperties().manufacturer
+    return this.enforce.string(this.getProperties().manufacturer)
   }
 
   get model() {
-    return this.getProperties().model
+    return this.enforce.string(this.getProperties().model)
   }
 
   get name(){
-    return this.getProperties().name
+    return this.enforce.string(this.getProperties().name)
   }
 
   get type() {
-    return this.getProperties().type
+    return this.enforce.string(this.getProperties().type)
   }
 
   get version() {
-    return this.getProperties().version
+    return this.enforce.string(this.getProperties().version)
   }
 }
 
@@ -54,7 +54,7 @@ export class Network extends Facade<Spec.Network> implements Spec.Network {
   }
 
   get bluetooth() {
-    return this.getProperties().bluetooth
+    return this.enforce.boolean(this.getProperties().bluetooth)
   }
 
   get carrier() {
@@ -66,7 +66,7 @@ export class Network extends Facade<Spec.Network> implements Spec.Network {
   }
 
   get wifi() {
-    return this.getProperties().wifi
+    return this.enforce.boolean(this.getProperties().wifi)
   }
 }
 
@@ -130,7 +130,7 @@ export class ApplicationOpen extends Facade<Spec.ApplicationOpen> implements Spe
   }
 
   get fromBackground() {
-    return this.getProperties().fromBackground || this.getProperties().from_background as Spec.ApplicationOpen["fromBackground"]
+    return this.enforce.boolean(this.getProperties().fromBackground || this.getProperties().from_background as Spec.ApplicationOpen["fromBackground"])
   }
 
   get referringApplication() {

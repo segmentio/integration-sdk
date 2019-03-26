@@ -107,21 +107,21 @@ export class Order extends Facade<Spec.Order> implements Spec.Order {
 
 class Filter extends Facade<Spec.Filter> implements Spec.Filter {
   get type() {
-    return this.getProperties().type
+    return this.enforce.string(this.getProperties().type)
   }
 
   get value() {
-    return this.getProperties().value
+    return this.enforce.string(this.getProperties().value)
   }
 }
 
 class Sort extends Facade<Spec.Sorts> implements Spec.Sorts {
   get type() {
-    return this.getProperties().type
+    return this.enforce.string(this.getProperties().type)
   }
 
   get value() {
-    return this.getProperties().value
+    return this.enforce.string(this.getProperties().value)
   }
 }
 
@@ -155,51 +155,51 @@ export class ProductList extends Facade<Spec.ProductList> implements Spec.Produc
   }
 
   get category() {
-    return this.getProperties().category
+    return this.enforce.string(this.getProperties().category)
   }
 
   get listId() {
-    return this.getProperties().listId || this.getProperties().list_id as Spec.ProductList["listId"]
+    return this.enforce.string(this.getProperties().listId || this.getProperties().list_id as Spec.ProductList["listId"])
   }
 }
 
 export class Promotion extends Facade<Spec.Promotion> implements Spec.Promotion {
   get creative() {
-    return this.getProperties().creative
+    return this.enforce.string(this.getProperties().creative)
   }
 
   get name() {
-    return this.getProperties().name
+    return this.enforce.string(this.getProperties().name)
   }
 
   get position() {
-    return this.getProperties().position
+    return this.enforce.number(this.getProperties().position)
   }
 
   get promotionId() {
-    return this.getProperties().promotionId
+    return this.enforce.string(this.getProperties().promotionId)
   }
 }
 
 export class CheckoutStep extends Facade<Spec.CheckoutStep> implements Spec.CheckoutStep {
   get checkoutId() {
-    return this.getProperties().checkoutId
+    return this.enforce.stringOrNumber(this.getProperties().checkoutId)
   }
 
   get orderId() {
-    return this.getProperties().orderId
+    return this.enforce.string(this.getProperties().orderId)
   }
 
   get step() {
-    return this.getProperties().step
+    return this.enforce.string(this.getProperties().step)
   }
 
   get shippingMethod() {
-    return this.getProperties().shippingMethod
+    return this.enforce.string(this.getProperties().shippingMethod)
   }
 
   get paymentMethod() {
-    return this.getProperties().paymentMethod
+    return this.enforce.string(this.getProperties().paymentMethod)
   }
 }
 
@@ -215,6 +215,6 @@ export class Cart extends Facade<Spec.Cart> implements Spec.Cart {
     }
   }
   get cartId() {
-    return this.getProperties().cartId || this.getProperties().cart_id as Spec.Cart["cartId"]
+    return this.enforce.string(this.getProperties().cartId || this.getProperties().cart_id as Spec.Cart["cartId"])
   }
 }

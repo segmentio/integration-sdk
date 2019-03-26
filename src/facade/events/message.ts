@@ -22,11 +22,11 @@ export class Context extends Facade<Spec.Context> implements Spec.Context {
   }
 
   get ip() {
-    return this.getProperties().ip
+    return this.enforce.string(this.getProperties().ip)
   }
 
   get locale() {
-    return this.getProperties().locale
+    return this.enforce.string(this.getProperties().locale)
   }
 
   get userAgent() {
@@ -44,8 +44,7 @@ export class Message extends Facade<Spec.Message> implements Spec.Message {
   }
 
   get userId() {
-    const userId = this.getProperties().userId || this.getProperties().user_id as Spec.Message["userId"]
-    return this.enforce.stringOrNumber(userId)
+    return this.enforce.stringOrNumber(this.getProperties().userId || this.getProperties().user_id as Spec.Message["userId"])
   }
 
   get timestamp() {
@@ -61,7 +60,7 @@ export class Message extends Facade<Spec.Message> implements Spec.Message {
   }
 
   get anonymousId() {
-    return this.getProperties().anonymousId
+    return this.enforce.stringOrNumber(this.getProperties().anonymousId)
   }
 
   get sentAt() {

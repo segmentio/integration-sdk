@@ -29,22 +29,22 @@ export class Campaign extends Facade<Spec.Campaign> implements Spec.Campaign {
 
 export class Window extends Facade<Spec.Window> implements Spec.Window {
   get path() {
-    return this.getProperties().path
+    return this.enforce.string(this.getProperties().path)
   }
 
   get referrer() {
-    return this.getProperties().referrer
+    return this.enforce.string(this.getProperties().referrer)
   }
 
   get search() {
-    return this.getProperties().search
+    return this.enforce.string(this.getProperties().search)
   }
 
   get title()  {
-    return this.getProperties().title
+    return this.enforce.string(this.getProperties().title)
   }
 
   get url() {
-    return this.getProperties().url
+    return this.enforce.string(this.getProperties().url)
   }
 }
