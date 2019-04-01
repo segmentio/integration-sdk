@@ -4,7 +4,7 @@
 
 "@segment/spec@https://github.com/segmentio/spec-ts":
   version "1.0.0"
-  resolved "https://github.com/segmentio/spec-ts#0ec14c7f78454383230877f5ebfffba5cd33e611"
+  resolved "https://github.com/segmentio/spec-ts#bfe246b6ae573f69f5fe2f63336c5ce77392b388"
 
 "@types/body-parser@*":
   version "1.17.0"
