@@ -2,6 +2,7 @@ import { Integration } from '../../src/integration'
 import { Track } from '../../src/facade/events';
 import { Mapper } from './mapper';
 import { Client } from './client';
+import { BadGateway } from '../../src/responses';
 
 export interface Settings {
   domain: string
