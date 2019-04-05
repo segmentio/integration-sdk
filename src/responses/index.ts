@@ -1,78 +1,22 @@
+import { BadRequest } from 'http-responses-ts'
 import { Message } from '../facade/events/';
-import * as HttpStatus from 'http-status-codes'
 
-interface HttpResponse {
-  status: number
-  name: string
-  message?: string
-}
-
-export class IntegrationResponse implements HttpResponse {
-  public name: string
-  constructor(public readonly status: number, public message?: string) {
-    try {
-      this.name = HttpStatus.getStatusText(status)
-    } catch (e) {
-      this.name = `Unknown Status Code: ${status}`
-      this.status = 502
-    }
-  }
-}
-
-export class ValidationError extends IntegrationResponse implements IntegrationResponse {
+export class ValidationError extends BadRequest {
   constructor(public message: string) {
-    super(HttpStatus.BAD_REQUEST, message)
-    this.name = 'Validation Error'
+    super(message, 'Validation Error')
   }
 }
 
-export class Accepted extends IntegrationResponse {
-  constructor(message?: string) {
-    super(HttpStatus.ACCEPTED, message)
-  }
-}
-
-export class BadRequest extends IntegrationResponse {
-  constructor(message?: string) {
-    super(HttpStatus.BAD_REQUEST, message)
-  }
-}
-
-export class Forbidden extends IntegrationResponse {
-  constructor(message?: string) {
-    super(HttpStatus.BAD_REQUEST, message)
-  }
-}
-
-export class InternalServerError extends IntegrationResponse {
-  constructor(message?: string) {
-    super(HttpStatus.INTERNAL_SERVER_ERROR, message)
-  }
-}
-
-export class PaymentRequired extends IntegrationResponse {
-  constructor(message?: string) {
-    super(HttpStatus.PAYMENT_REQUIRED, message)
-  }
-}
-
-export class Success extends IntegrationResponse {
-  constructor() {
-    super(HttpStatus.OK)
-  }
-}
-
-export class EventNotSupported<T extends Message> extends IntegrationResponse {
+export class EventNotSupported<T extends Message> extends BadRequest {
   constructor(event: T["type"]) {
-    super(HttpStatus.METHOD_NOT_ALLOWED)
-    this.name = 'Event Not Supported'
-    this.message = `Event ${event} not supported.`
+    super(`Event ${event} not supported.`, 'Unsupported Event Type')
   }
 }
 
-export class InvalidEventPayload extends IntegrationResponse {
+export class InvalidEventPayload extends BadRequest {
   constructor() {
-    super(HttpStatus.BAD_REQUEST, 'Event Payload is Invalid')
-    this.name = 'Invalid Event Payload'
+    super('Event Payload is Invalid', 'Invalid Event Payload')
   }
 }
+
+export * from 'http-responses-ts'
