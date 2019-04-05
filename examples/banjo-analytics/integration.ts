@@ -9,7 +9,6 @@ export class BanjoAnalytics extends Integration {
     super()
     this.subscribe<OrderCompleted>('Order Completed', this.orderCompleted)
   }
-
   async track(event: Track) {
     if (!event.userId) {
       return new ValidationError('UserId is a required property of all track events')

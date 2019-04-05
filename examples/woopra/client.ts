@@ -1,7 +1,7 @@
 import { WoopraEvent, WoopraIdentify } from './types'
 import axios, { AxiosResponse } from 'axios'
 import _ from '../../src/utils'
-import { IntegrationResponse } from '../../src/responses';
+import { HttpResponse } from '../../src/responses';
 
 export interface WoopraResponse extends AxiosResponse {
   status:
@@ -27,15 +27,15 @@ export class Client {
   private async request(
     path: '/track/ce' | '/track/identify',
     payload: WoopraEvent | WoopraIdentify
-  ): Promise<IntegrationResponse> {
-    try {
-      const res = await axios.get(this.endpoint + path, {
-        params: _.deepReject(payload)
-      }) as WoopraResponse
-      return new IntegrationResponse(res.status, res.data)
-    } catch (e) {
-      console.log(e.status)
-      throw new IntegrationResponse(e.response.status, e.response.statusText)
-    }
+  ): Promise<HttpResponse> {
+    const res = await axios.get(this.endpoint + path, {
+      params: _.deepReject(payload),
+      // No need to throw at all. Woopra's API returns sensible responses.
+      validateStatus: () => true
+    })
+    return new HttpResponse({
+      message: res.statusText,
+      statusCode: res.status
+    })
   }
 }
