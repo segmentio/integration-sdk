@@ -1,6 +1,6 @@
 {
   "name": "@segment/integration-sdk",
-  "version": "1.0.1",
+  "version": "2.0.0",
   "description": ":mountain_cableway:Framework for building safe and reliable Segment integrations",
   "main": "./dist",
   "scripts": {
@@ -12,7 +12,7 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "@segment/facade": "^3.2.6",
+    "@segment/facade": "https://github.com/segmentio/facade#v4",
     "@segment/spec": "https://github.com/segmentio/spec-ts",
     "@types/express": "^4.16.1",
     "@types/lodash": "^4.14.121",
@@ -34,6 +34,6 @@
     "typescript": "^3.3.3333"
   },
   "peerDependencies": {
-    "@segment/facade": "^3.2.6"
+    "@segment/facade": "https://github.com/segmentio/facade#v4"
   }
 }
