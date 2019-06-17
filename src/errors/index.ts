@@ -1,5 +1,4 @@
 import { BadRequest } from 'http-responses-ts'
-import { Message } from '../facade/events/';
 
 export class ValidationError extends BadRequest {
   constructor(public message: string) {
@@ -7,8 +6,8 @@ export class ValidationError extends BadRequest {
   }
 }
 
-export class EventNotSupported<T extends Message> extends BadRequest {
-  constructor(event: T["type"]) {
+export class EventNotSupported extends BadRequest {
+  constructor(event: 'track' | 'identify' |  'group' | 'page') {
     super(`Event ${event} not supported.`, 'Unsupported Event Type')
   }
 }
@@ -18,5 +17,3 @@ export class InvalidEventPayload extends BadRequest {
     super('Event Payload is Invalid', 'Invalid Event Payload')
   }
 }
-
-export * from 'http-responses-ts'

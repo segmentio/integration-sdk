@@ -1,7 +1,0 @@
-export * from './ecommerce'
-export * from './mobile'
-export * from './identify'
-export * from './track'
-export * from './message'
-export * from './group'
-export * from './page'

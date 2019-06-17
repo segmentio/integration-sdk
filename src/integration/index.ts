@@ -1,31 +1,39 @@
-import { Track, Identify, Group, Page } from '../facade/events'
-import { HttpResponse ,EventNotSupported, InvalidEventPayload } from '../responses'
-import { toFacade, SpecEvents } from './to-facade'
-import { Facade } from '../facade/src'
+import { EventNotSupported, InvalidEventPayload, ValidationError } from '../errors'
+import { SpecEventMap, SpecEvent } from './spec-event-map'
+import { Track, Identify, Group, Page } from '@segment/facade'
 import * as Spec from '@segment/spec/events'
+import { EventHandler, EventName } from './types'
 
-type Filter<Base, Condition> = {
-  [Key in keyof Base]: Base[Key] extends Condition ? Key : never
+export interface HttpResponse {
+  statusCode: number
+  message?: string
+  statusText?: string
 }
 
-type EventName<T extends Facade> = Filter<SpecEvents, T>[keyof SpecEvents]
+export class Integration {
+  public settings: object
+  public subscriptions = new Map<string, EventHandler<SpecEvent>>()
+  private specEventMap: SpecEventMap
 
-interface EventHandler<T = any> {
-  (event: T, options?: object): Promise<HttpResponse>
-}
+  constructor(settings: object) {
+    this.settings = settings
+    this.specEventMap = new SpecEventMap()
+  }
 
-export abstract class Integration {
-  public abstract settings: object
-  public subscriptions = new Map<string, EventHandler>()
-
-  constructor() {}
-
-  subscribe<T extends Track>(name: EventName<T>, handler: EventHandler<T>) {
+  public subscribe<T extends SpecEvent>(name: EventName<SpecEventMap, T>, handler: EventHandler<T>) {
+    if (!this.specEventMap[name]) {
+      throw new Error(`Event name ${name} is not a supported subscription.`)
+    }
     this.subscriptions.set(name, handler.bind(this))
   }
 
-  async track(event: Track, options?: object): Promise<HttpResponse> {
+  public reject(message: string): InvalidEventPayload {
+    return new ValidationError(message)
+  }
+
+  async track(event: Track): Promise<HttpResponse> {
     return new EventNotSupported('track')
+
   }
 
   async identify(event: Identify): Promise<HttpResponse> {
@@ -51,14 +59,11 @@ export abstract class Integration {
       if (event.type === 'track') {
         const subscription = this.subscriptions.get(event.event)
         if (subscription) {
-          const facade = toFacade(event)
-          if (!facade) {
-            // TODO: How should this edge case be handled?
-            throw new Error('Unsupported Spec Event')
-          }
-          return await subscription(facade, {})
+          const SpecFacade = this.specEventMap[event.event]
+          const facade = new SpecFacade(event)
+          return await subscription(facade)
         }
-        return await this.track(new Track(event), {})
+        return await this.track(new Track(event))
       }
 
       if (event.type === 'identify') {
@@ -73,17 +78,16 @@ export abstract class Integration {
         return await this.page(new Page(event))
       }
       // This line should not be reachable but must be defined for TS exhaustiveness checks.
-      // TODO: Use pre-defined error.
       throw new Error(`Could not recognize event type ${event!.type}`)
     } catch (e) {
-      if (e instanceof HttpResponse) {
+      if (e.statusCode) {
         return e
       }
       throw e
     }
   }
 
-  // TODO: Add more exhaustive checks here.
+  // TODO: Migrate this to a schema validator.
   private isSegmentEvent(
     event: object
   ): event is Spec.Track | Spec.Identify | Spec.Page | Spec.Group {

@@ -1,14 +1,15 @@
 {
   "compilerOptions": {
     "module": "commonjs",
-    "moduleResolution": "node",
     "target": "ES2017",
-    "outDir": "./lib",
+    "outDir": "dist",
+    "rootDir": "./src",
     "declaration": true,
+    "declarationMap": true,
     "sourceMap": true,
     "strict": true,
-    "suppressImplicitAnyIndexErrors": true,
-    "experimentalDecorators": true
+    "esModuleInterop": true,
+    "suppressImplicitAnyIndexErrors": true
   },
-  "include": ["src"]
+  "exclude": ["dist", "node_modules", "examples"]
 }
