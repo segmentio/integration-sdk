@@ -4,12 +4,6 @@ import { Track, Identify, Group, Page } from '@segment/facade'
 import * as Spec from '@segment/spec/events'
 import { EventHandler, EventName } from './types'
 
-export interface HttpResponse {
-  statusCode: number
-  message?: string
-  statusText?: string
-}
-
 export class Integration {
   public settings: object
   public subscriptions = new Map<string, EventHandler<SpecEvent>>()
@@ -31,24 +25,24 @@ export class Integration {
     return new ValidationError(message)
   }
 
-  async track(event: Track): Promise<HttpResponse> {
+  async track(event: Track): Promise<any> {
     return new EventNotSupported('track')
 
   }
 
-  async identify(event: Identify): Promise<HttpResponse> {
+  async identify(event: Identify): Promise<any> {
     return new EventNotSupported('identify')
   }
 
-  async page(event: Page): Promise<HttpResponse> {
+  async page(event: Page): Promise<any> {
     return new EventNotSupported('page')
   }
 
-  async group(event: Group): Promise<HttpResponse> {
+  async group(event: Group): Promise<any> {
     return new EventNotSupported('group')
   }
 
-  public async handle(payload: object): Promise<HttpResponse> {
+  public async handle(payload: object): Promise<any> {
     if (!this.isSegmentEvent(payload)) {
       return new InvalidEventPayload()
     }

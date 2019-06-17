@@ -12,7 +12,7 @@ export class Woopra extends Integration {
   private mapper: Mapper
   private client = new Client()
   constructor(public settings: Settings) {
-    super()
+    super(settings)
     this.mapper = new Mapper(settings)
   }
 

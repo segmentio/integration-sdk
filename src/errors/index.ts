@@ -1,19 +1,17 @@
-import { BadRequest } from 'http-responses-ts'
-
-export class ValidationError extends BadRequest {
+export class ValidationError extends Error {
   constructor(public message: string) {
-    super(message, 'Validation Error')
+    super('Validation Error')
   }
 }
 
-export class EventNotSupported extends BadRequest {
+export class EventNotSupported extends Error {
   constructor(event: 'track' | 'identify' |  'group' | 'page') {
-    super(`Event ${event} not supported.`, 'Unsupported Event Type')
+    super(`Event ${event} not supported.`)
   }
 }
 
-export class InvalidEventPayload extends BadRequest {
+export class InvalidEventPayload extends Error {
   constructor() {
-    super('Event Payload is Invalid', 'Invalid Event Payload')
+    super('Invalid Event Payload')
   }
 }
