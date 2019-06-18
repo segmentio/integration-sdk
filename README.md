@@ -6,12 +6,12 @@ The Segment Integration SDK is a framework designed to help developers build rel
 
 With `yarn`:
 ```
-yarn add @segment/integration-sdk
+yarn add @segment/integration-sdk @segment/spec-ts
 ```
 
 With `npm`:
 ```
-npm i --save @segment/integration-sdk
+npm i --save @segment/integration-sdk @segment/spec-ts
 ```
 
 ## Basic Usage
