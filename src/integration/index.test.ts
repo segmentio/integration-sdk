@@ -1,6 +1,7 @@
 import { Integration } from '.';
 import assert from 'assert'
 import sinon from 'sinon'
+import { Track } from '@segment/spec-ts';
 
 describe('Integration', () =>  {
   class MyIntegration extends Integration {
@@ -24,6 +25,21 @@ describe('Integration', () =>  {
       myIntegration.subscribe('Order Updated', orderUpdatedStub)
       assert.strictEqual(typeof myIntegration.subscriptions.get('Product List Filtered') === 'function', true)
       assert.strictEqual(typeof myIntegration.subscriptions.get('Order Updated') === 'function', true)
+    })
+
+    it('should bind subscriptions to the integration class', async () => {
+      class MyOtherIntegration extends Integration {
+        constructor(settings: {}) {
+          super(settings)
+          this.subscribe('track', this.track)
+        }
+        async track(event: Track) {
+          assert(this instanceof MyOtherIntegration)
+        }
+      }
+
+      const i = new MyOtherIntegration({})
+      await i.publish({ event: 'Foo', type: 'track' })
     })
   })
 

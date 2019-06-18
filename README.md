@@ -14,40 +14,35 @@ With `npm`:
 npm i --save @segment/integration-sdk
 ```
 
-## Usage
+## Basic Usage
 ```typescript
 // index.ts
-import { Integration } from '@segment/integration-sdk/lib/integration'
-import { Track, Identify, OrderCompleted } from '@segment/integration-sdk/lib/facade/events'
-import { Success } from '@segment/integration-sdk/lib/responses'
+import { Integration } from '@segment/integration-sdk'
+import { Track, Identify, OrderCompleted } from '@segment/spec-ts'
 
 interface Settings {}
 
 export class MyIntegration extends Integration {
   constructor(public settings: Settings) {
     super()
-    this.subscribe<OrderCompleted>('Order Completed', this.orderCompleted)
+    this.subscribe('track', this.track)
+    this.subscribe('identify', this.identify)
+    this.subscribe('Order Completed', this.orderCompleted)
   }
 
   async track(event: Track) {
     console.log('Track event handled...')
-    return new Success()
   }
 
   async identify(event: Identify) {
     console.log('Identify event handled...')
-    return new Success()
   }
 
   async orderCompleted(event: OrderCompleted) {
     console.log(event.properties.revenue)
-    return new Success()
   }
 }
 ```
-
-# Documentation
-More documentation and a brief tutorial can be found [here](https://segment.gitbook.io/project/-LZ62ZxaRM7vxXe_MLAt/).
 
 # Examples
 You can find a simple example of an integration in the `/examples` directory.
