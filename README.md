@@ -45,4 +45,4 @@ export class MyIntegration extends Integration {
 ```
 
 # Examples
-You can find a simple example of an integration in the `/examples` directory.
+You can find a simple examples in the `/examples` directory.
