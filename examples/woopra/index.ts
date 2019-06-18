@@ -1,4 +1,4 @@
-import { Server } from '../../src/server'
+import { Server } from '../server'
 import { Woopra } from './integration'
 
 const server = new Server(Woopra)

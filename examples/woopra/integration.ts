@@ -1,7 +1,8 @@
 import { Integration } from '../../src/integration'
-import { Track } from '@segment/facade';
+import * as Events from '@segment/spec-ts/events';
 import { Mapper } from './mapper';
 import { Client } from './client';
+import { Track } from '@segment/facade';
 
 export interface Settings {
   domain: string
@@ -14,10 +15,12 @@ export class Woopra extends Integration {
   constructor(public settings: Settings) {
     super(settings)
     this.mapper = new Mapper(settings)
+    this.subscribe('track', this.track)
   }
 
-  async track(event: Track) {
-    const payload = this.mapper.customEvent(event)
+  async track(event: Events.Track) {
+    const track = new Track(event)
+    const payload = this.mapper.customEvent(track)
     return await this.client.customEvent(payload)
   }
 }

@@ -1,4 +1,4 @@
-import { Integration } from '../integration'
+import { Integration } from '../../src'
 import * as bodyParser from 'body-parser'
 import express from 'express'
 import { InternalServerError, HttpResponse } from 'http-responses-ts';
@@ -20,7 +20,7 @@ export class Server {
       const settings = this.parseSettings(req.headers)
       const Integration = this.Integration
       const integration = new Integration(settings)
-      const response = await integration.handle(event)
+      const response = await integration.publish(event)
       return res.status(response.statusCode).json(response)
     } catch (error) {
       let response: HttpResponse
