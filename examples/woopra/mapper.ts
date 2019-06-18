@@ -1,7 +1,7 @@
-import { Track, Identify } from '../../src/facade/events';
+import { Track, Identify } from '@segment/facade';
 import { BasePayload, WoopraEvent, WoopraIdentify } from './types';
 import { Settings } from './integration';
-import _ from '../../src/utils'
+import { mapKeys } from 'lodash'
 
 export class Mapper {
   constructor(private settings: Settings) {}
@@ -29,14 +29,14 @@ export class Mapper {
 
     // Woopra requires all custom event properties be prefixed with `ce_`
     // See: https://docs.woopra.com/reference#section-custom-data-property-prefixes-ce_-cv_-and-cs_-
-    return _.mapKeys(properties, (value, key) => `ce_${key}`)
+    return mapKeys(properties, (value, key) => `ce_${key}`)
   }
 
   private mapCustomUserProperties(event: Identify) {
     const traits = event.traits.toJSON()
     // Woopra requires all custom event properties be prefixed with `cv_`
     // See: https://docs.woopra.com/reference#section-custom-data-property-prefixes-ce_-cv_-and-cs_-
-    return _.mapKeys(traits, (value, key) => `cv_${key}`)
+    return mapKeys(traits, (value, key) => `cv_${key}`)
   }
 
   private basePayload(event: Track | Identify): BasePayload {

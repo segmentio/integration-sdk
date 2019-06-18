@@ -1,29 +1,26 @@
-import { Integration } from '../../lib/integration';
-import { Track, OrderCompleted, Identify } from '../../lib/facade/events';
-import { Success, ValidationError } from '../../src/responses'
+import { Integration } from '../../src/integration';
+import * as Events from '@segment/spec-ts/events';
+import { Track } from '@segment/facade'
 
 interface Settings {}
 
 export class BanjoAnalytics extends Integration {
   constructor(public settings: Settings) {
-    super()
-    this.subscribe<OrderCompleted>('Order Completed', this.orderCompleted)
+    super(settings)
+    this.subscribe('Order Completed', this.orderCompleted)
+    this.subscribe('track', this.track)
   }
-  async track(event: Track) {
-    const id = event.userId
-    if (!event.userId) {
-      return new ValidationError('UserId is a required property of all track events')
+  async track(event: Events.Track) {
+    const track = new Track(event)
+    const id = track.userId
+    if (!track.userId) {
+      return this.reject('UserId is a required property of all track events')
     }
     console.log(event.event)
-    return new Success()
   }
 
-  async orderCompleted(event: OrderCompleted) {
-    console.log(event.properties.revenue)
-    return new Success()
-  }
-
-  async identify(event: Identify) {
-    const id = event.userId
+  async orderCompleted(event: Events.OrderCompleted) {
+    const track = new Track(event)
+    console.log(track.properties.revenue)
   }
 }

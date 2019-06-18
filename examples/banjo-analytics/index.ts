@@ -1,5 +1,5 @@
 import { BanjoAnalytics } from './integration'
-import { Server } from '../../src/server';
+import { Server } from '../server';
 
 const server = new Server(BanjoAnalytics)
 

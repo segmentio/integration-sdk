@@ -1,9 +1,9 @@
-import { Integration } from '../integration'
+import { Integration } from '../../src'
 import * as bodyParser from 'body-parser'
-import * as express from 'express'
-import { InternalServerError, HttpResponse } from '../responses';
+import express from 'express'
+import { InternalServerError, HttpResponse } from 'http-responses-ts';
 import * as http from 'http';
-import _ from '../utils'
+import { mapKeys, camelCase, isPlainObject } from 'lodash'
 const app = express()
 
 export class Server {
@@ -20,14 +20,14 @@ export class Server {
       const settings = this.parseSettings(req.headers)
       const Integration = this.Integration
       const integration = new Integration(settings)
-      const response = await integration.handle(event)
+      const response = await integration.publish(event)
       return res.status(response.statusCode).json(response)
     } catch (error) {
       let response: HttpResponse
-      if (error instanceof HttpResponse) {
+      if (error.statusCode) {
         response = error
         res.status(response.statusCode).json(response)
-      // If an error is not an instance of an HttpError, we treat it as an uncaught exception.
+        // If an error does not contain a statusCode, we treat it as an uncaught exception.
       } else {
         response = new InternalServerError()
         res.status(response.statusCode).json(response)
@@ -54,12 +54,12 @@ export class Server {
 
   private parseSettings(headers: http.IncomingHttpHeaders): object {
     const settings = headers['X-Settings']
-    if (settings && _.isObject(settings)) {
-      return settings
+    if (settings && isPlainObject(settings)) {
+      return settings as object
     }
 
-    return _.mapKeys(headers, (value, key) => {
-      return _.camelCase(key)
+    return mapKeys(headers, (value, key) => {
+      return camelCase(key)
     })
   }
 }
