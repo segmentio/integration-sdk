@@ -24,7 +24,7 @@ interface Settings {}
 
 export class MyIntegration extends Integration {
   constructor(public settings: Settings) {
-    super()
+    super(settings)
     this.subscribe('track', this.track)
     this.subscribe('identify', this.identify)
     this.subscribe('Order Completed', this.orderCompleted)
